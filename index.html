@@ -153,7 +153,7 @@
   <h1>💰 Budget Familial</h1>
   <p class="sub">CCF · CENTRE NERVEUX</p>
 
-  <svg viewBox="0 0 460 490" id="d">
+  <svg viewBox="-10 -20 480 540" id="d">
     <defs>
       <radialGradient id="cg" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#2a3a7a"/>
@@ -192,8 +192,8 @@
     <text x="215" y="190" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
     <text x="215" y="202" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r3">CAF +860€</text>
 
-    <text x="215" y="224" text-anchor="middle" font-size="7.5" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 -1 100€</text>
-    <text x="215" y="235" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ 4 060€</text>
+    <text x="215" y="224" text-anchor="middle" font-size="7.5" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
+    <text x="215" y="235" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
 
     <g id="arrows"></g>
     <g id="bubbles"></g>
@@ -238,7 +238,7 @@
   var CFG = [
     ['hayette',  'Bourso Hayette','#fd79a8', '#fd79a8', 200, 140, 30],
     ['rachid',   'Bourso Rachid', '#54a0ff', '#54a0ff', 155, 145, 28],
-    ['vie',      'Bourso joint\nVie courante','url(#vg)', '#2d8a38', 90, 150, 46],
+    ['vie',      'Bourso joint\nVie courante','url(#vg)', '#2d8a38', 270, 150, 46],
     ['amine',    'Bourso Amine',  'url(#ag)', '#cc7a00', 50,  135, 24],
     ['mayssa',   'Bourso Mayssa', 'url(#mg)', '#7c3aed', 10,  140, 24],
     ['assiya',   'Bourso Assiya', '#fd79a8', '#fd79a8', 330, 140, 24],
@@ -281,8 +281,8 @@
     document.getElementById('r1').textContent = 'Salaire Rachid +'+fmt(d.mr);
     document.getElementById('r2').textContent = 'Salaire Hayette +'+fmt(d.mme);
     document.getElementById('r3').textContent = 'CAF +'+fmt(d.caf);
-    document.getElementById('r4').textContent = '🔒 -'+fmt(d.charges);
-    document.getElementById('r5').textContent = '↘ '+fmt(reste);
+    document.getElementById('r4').textContent = '🔒 Charges fixes -'+fmt(d.charges);
+    document.getElementById('r5').textContent = '↘ Reste '+fmt(reste);
 
     // Vider les anciennes flèches et bulles
     document.getElementById('arrows').innerHTML = '';
@@ -298,7 +298,7 @@
 
       var rad = deg(angle);
       var x = CX + Math.cos(rad) * dist;
-      var y = CY - Math.sin(rad) * dist;
+      var y = CY + Math.sin(rad) * dist;
 
       // Rayon adaptatif
       var r = baseR;
@@ -308,7 +308,7 @@
       }
 
       // --- FLÈCHE ---
-      var ar = Math.atan2(CY - y, x - CX);
+      var ar = Math.atan2(y - CY, x - CX);
       var x1 = CX + Math.cos(ar) * 74;
       var y1 = CY + Math.sin(ar) * 74;
       var x2 = x - Math.cos(ar) * (r + 4);

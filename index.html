@@ -7,255 +7,147 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --fond: #0d0d1f;
-    --carte: #16163a;
-    --texte: #e8e8f0;
+    --bg: #0d0d1f;
+    --card: #16163a;
+    --text: #e8e8f0;
     --muted: #6a6a8a;
-    --ccf-color: #54a0ff;
-    --rose: #fd79a8;
-    --bleu: #54a0ff;
-    --vert: #53d769;
+    --blue: #54a0ff;
+    --green: #53d769;
+    --pink: #fd79a8;
     --orange: #ffa502;
-    --violet: #a29bfe;
-    --cyan: #0fb9b1;
+    --purple: #a29bfe;
+    --teal: #0fb9b1;
+    --red: #ff6b81;
   }
-  body {
+  html, body {
+    background: var(--bg);
+    color: var(--text);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--fond);
-    color: var(--texte);
-    min-height: 100vh;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .wrapper {
-    max-width: 500px;
     width: 100%;
-    padding: 16px 12px 40px;
+    overflow-x: hidden;
   }
+  .wrap {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 12px 10px 32px;
+  }
+
   h1 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     text-align: center;
-    background: linear-gradient(135deg, var(--ccf-color), var(--violet));
+    background: linear-gradient(90deg, var(--blue), var(--purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 700;
-    padding: 12px 0 4px;
   }
   .sub {
     text-align: center;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--muted);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin-bottom: 6px;
   }
 
-  /* CANVAS DIAGRAMME */
-  .diagram-wrap {
-    position: relative;
-    width: 100%;
-    max-width: 440px;
-    margin: 0 auto 16px;
-    aspect-ratio: 1 / 1.1;
-  }
-  #diagram {
+  svg {
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 92vw;
+    margin: 0 auto;
   }
 
-  /* BULLE CCF */
-  .ccf-bubble {
-    fill: #1e2a5a;
-    stroke: var(--ccf-color);
-    stroke-width: 2;
-    cursor: pointer;
-    transition: stroke-width 0.2s;
-  }
-  .ccf-glow {
-    fill: none;
-    stroke: var(--ccf-color);
-    stroke-width: 1;
-    opacity: 0.2;
-  }
-
-  /* FLECHES */
-  .flow-arrow {
-    stroke: var(--muted);
-    stroke-width: 1.5;
-    fill: none;
-    marker-end: url(#arrowhead);
-    opacity: 0.7;
-  }
-  .flow-label {
-    font-size: 9px;
-    fill: var(--muted);
-    text-anchor: middle;
-    dominant-baseline: middle;
-    font-weight: 600;
-  }
-
-  /* BULLES COMPTES */
-  .bubble {
-    cursor: pointer;
-    transition: opacity 0.3s;
-  }
-  .bubble circle {
-    stroke-width: 2.5;
-    opacity: 0.9;
-  }
-  .bubble text.name {
-    font-size: 9px;
-    font-weight: 700;
-    text-anchor: middle;
-    fill: #fff;
-    dominant-baseline: auto;
-  }
-  .bubble text.amount {
-    font-size: 11px;
-    font-weight: 800;
-    text-anchor: middle;
-    fill: #fff;
-    dominant-baseline: hanging;
-  }
-  .bubble text.desc {
-    font-size: 7px;
-    text-anchor: middle;
-    fill: rgba(255,255,255,0.5);
-    dominant-baseline: hanging;
-  }
-
-  /* LÉGENDE REVENUS */
-  .revenue-label {
-    font-size: 8px;
-    fill: var(--muted);
-    text-anchor: middle;
-    font-weight: 500;
-  }
-  .revenue-value {
-    font-size: 10px;
-    font-weight: 700;
-    text-anchor: middle;
-    fill: var(--vert);
-  }
-  .charge-label {
-    font-size: 8px;
-    fill: var(--muted);
-    text-anchor: middle;
-  }
-  .charge-value {
-    font-size: 10px;
-    font-weight: 700;
-    text-anchor: middle;
-    fill: #ff6b81;
-  }
-  .reste-label {
-    font-size: 8px;
-    fill: var(--muted);
-    text-anchor: middle;
-  }
-  .reste-value {
-    font-size: 12px;
-    font-weight: 800;
-    text-anchor: middle;
-    fill: var(--ccf-color);
-  }
-
-  /* PANEL EDITION */
-  .edit-toggle {
+  .ctrl {
     display: block;
     width: 100%;
-    padding: 14px;
-    background: var(--carte);
-    border: 1px dashed rgba(255,255,255,0.15);
+    padding: 13px;
+    background: var(--card);
+    border: 1px dashed rgba(255,255,255,0.12);
     border-radius: 14px;
     color: var(--muted);
     font-size: 0.85rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 12px;
+    transition: all .2s;
+    margin-top: 8px;
   }
-  .edit-toggle:hover { border-color: var(--ccf-color); color: var(--ccf-color); }
+  .ctrl:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
 
-  .edit-panel {
+  .panel {
     display: none;
-    background: var(--carte);
+    background: var(--card);
     border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 14px;
-    animation: slideDown 0.3s ease;
+    padding: 16px;
+    margin-top: 8px;
+    animation: slide .3s ease;
   }
-  .edit-panel.open { display: block; }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-12px); }
+  .panel.open { display: block; }
+  @keyframes slide {
+    from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-  .edit-panel h3 {
-    font-size: 0.75rem;
+  .panel h3 {
+    font-size: 0.7rem;
     color: var(--muted);
-    margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    margin-top: 12px;
   }
-  .edit-row {
+  .panel h3:first-child { margin-top: 0; }
+  .grp {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 8px;
   }
-  .edit-group label {
+  .grp label {
     display: block;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--muted);
-    margin-bottom: 3px;
+    margin-bottom: 2px;
   }
-  .edit-group input {
+  .grp input {
     width: 100%;
-    padding: 10px 12px;
-    background: var(--fond);
-    border: 1px solid rgba(255,255,255,0.08);
+    padding: 9px 10px;
+    background: var(--bg);
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 10px;
-    color: var(--texte);
+    color: var(--text);
     font-size: 0.85rem;
     outline: none;
-    transition: border 0.2s;
   }
-  .edit-group input:focus { border-color: var(--ccf-color); }
-  .edit-full { grid-column: 1 / -1; }
+  .grp input:focus { border-color: var(--blue); }
 
-  .edit-save {
+  .save {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, var(--ccf-color), var(--violet));
+    background: linear-gradient(135deg, var(--blue), var(--purple));
     border: none;
     border-radius: 14px;
     color: #fff;
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 4px;
+    margin-top: 6px;
   }
-  .edit-save:active { opacity: 0.8; }
+  .save:active { opacity: .8; }
 
   .toast {
     position: fixed;
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--vert);
+    background: var(--green);
     color: #000;
     padding: 10px 24px;
     border-radius: 30px;
-    font-size: 0.8rem;
+    font-size: .8rem;
     font-weight: 700;
     display: none;
     z-index: 100;
-    box-shadow: 0 4px 24px rgba(83,215,105,0.3);
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn .3s ease;
   }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateX(-50%) translateY(16px); }
@@ -264,377 +156,278 @@
 
   footer {
     text-align: center;
-    font-size: 0.55rem;
+    font-size: .55rem;
     color: var(--muted);
-    opacity: 0.4;
-    padding-top: 8px;
+    opacity: .4;
+    padding-top: 10px;
   }
 </style>
 </head>
 <body>
 
-<div class="wrapper">
+<div class="wrap">
   <h1>💰 Budget Familial</h1>
-  <p class="sub">CCF — CENTRE NERVEUX</p>
+  <p class="sub">CCF · CENTRE NERVEUX</p>
 
-  <div class="diagram-wrap">
-    <svg viewBox="0 0 440 480" id="diagram" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#6a6a8a" />
-        </marker>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <radialGradient id="ccfGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#2a3a7a"/>
-          <stop offset="100%" stop-color="#16215a"/>
-        </radialGradient>
-        <radialGradient id="epargneGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#1a7a72"/>
-          <stop offset="100%" stop-color="#0f4a44"/>
-        </radialGradient>
-      </defs>
+  <svg viewBox="0 0 420 460" id="d">
+    <defs>
+      <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#2a3a7a"/>
+        <stop offset="100%" stop-color="#14184a"/>
+      </radialGradient>
+      <radialGradient id="eg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#1a7a72"/>
+        <stop offset="100%" stop-color="#0f4a44"/>
+      </radialGradient>
+    </defs>
 
-      <!-- FLECHES + ÉTIQUETTES (rendues par JS) -->
-      <g id="arrows-layer"></g>
-      <g id="labels-layer"></g>
+    <!-- GLOW CCF -->
+    <circle cx="210" cy="180" r="70" fill="none" stroke="#54a0ff" stroke-width="1" opacity="0.15"/>
 
-      <!-- BULLES (rendues par JS) -->
-      <g id="bubbles-layer"></g>
+    <!-- CCF -->
+    <circle cx="210" cy="180" r="58" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
 
-      <!-- CCF (rendu par JS car centré dynamiquement) -->
-      <g id="ccf-layer"></g>
-    </svg>
-  </div>
+    <!-- Revenus CCF -->
+    <text x="210" y="142" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff" dominant-baseline="auto">CCF</text>
+    <text x="210" y="154" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-  <!-- RÉSUMÉ -->
-  <div class="edit-toggle" id="edit-toggle">✏️ Modifier les montants</div>
+    <text x="210" y="174" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r1">+2 500€</text>
+    <text x="210" y="186" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r2">+1 800€</text>
+    <text x="210" y="198" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r3">+860€</text>
 
-  <div class="edit-panel" id="edit-panel">
+    <!-- Charges fixes -->
+    <text x="210" y="227" text-anchor="middle" font-size="8" font-weight="600" fill="#ff6b81" dominant-baseline="hanging" id="r4">🔒 −1 100€ charges</text>
+
+    <!-- Reste à dispatcher -->
+    <text x="210" y="244" text-anchor="middle" font-size="10" font-weight="800" fill="#54a0ff" dominant-baseline="hanging" id="r5">↘ 4 060€ à dispatcher</text>
+
+    <!-- FLECHES + BULLES (générées par JS) -->
+    <g id="arrows"></g>
+    <g id="bubbles"></g>
+  </svg>
+
+  <button class="ctrl" id="editBtn">✏️ Modifier les montants</button>
+
+  <div class="panel" id="panel">
     <h3>Revenus</h3>
-    <div class="edit-row">
-      <div class="edit-group"><label>Salaire Mr (€)</label><input type="number" id="e-mr" value="2500"></div>
-      <div class="edit-group"><label>Salaire Mme (€)</label><input type="number" id="e-mme" value="1800"></div>
-      <div class="edit-group"><label>CAF (€)</label><input type="number" id="e-caf" value="860"></div>
-      <div class="edit-group"><label>Charges fixes (€)</label><input type="number" id="e-charges" value="1100"></div>
+    <div class="grp">
+      <div><label>Salaire Mr (€)</label><input type="number" id="i-mr" value="2500"></div>
+      <div><label>Salaire Mme (€)</label><input type="number" id="i-mme" value="1800"></div>
+      <div><label>CAF (€)</label><input type="number" id="i-caf" value="860"></div>
+      <div><label>Charges (€)</label><input type="number" id="i-charges" value="1100"></div>
     </div>
     <h3>Dispatch</h3>
-    <div class="edit-row">
-      <div class="edit-group"><label>Hayette (€)</label><input type="number" id="e-hayette" value="260"></div>
-      <div class="edit-group"><label>Rachid (€)</label><input type="number" id="e-rachid" value="100"></div>
-      <div class="edit-group"><label>Vie Courante (€)</label><input type="number" id="e-viecourante" value="2000"></div>
-      <div class="edit-group"><label>Amine (€)</label><input type="number" id="e-amine" value="35"></div>
-      <div class="edit-group"><label>Mayssa (€)</label><input type="number" id="e-mayssa" value="35"></div>
-      <div class="edit-group"><label>Assiya (€)</label><input type="number" id="e-assiya" value="35"></div>
+    <div class="grp">
+      <div><label>Hayette (€)</label><input type="number" id="i-hayette" value="260"></div>
+      <div><label>Rachid (€)</label><input type="number" id="i-rachid" value="100"></div>
+      <div><label>Vie Courante (€)</label><input type="number" id="i-vie" value="2000"></div>
+      <div><label>Amine (€)</label><input type="number" id="i-amine" value="35"></div>
+      <div><label>Mayssa (€)</label><input type="number" id="i-mayssa" value="35"></div>
+      <div><label>Assiya (€)</label><input type="number" id="i-assiya" value="35"></div>
     </div>
-    <button class="edit-save" id="edit-save">💾 Enregistrer</button>
+    <button class="save" id="saveBtn">💾 Enregistrer</button>
   </div>
 
-  <footer>Budget Familial · Données sauvegardées automatiquement</footer>
+  <footer>Budget Familial · Données sauvegardées</footer>
 </div>
 
 <div class="toast" id="toast">✅ Mis à jour !</div>
 
 <script>
 (function() {
-  const SVG_NS = 'http://www.w3.org/2000/svg';
-  const CX = 220, CY = 195; // centre CCF
+  const NS = 'http://www.w3.org/2000/svg';
+  const CX = 210, CY = 180;
 
-  // Définition des comptes: [id, label, desc, montant défaut, couleur, angle (degrés), distance du centre, rayon bulle]
-  const ACCOUNTS = [
-    {id:'hayette',  label:'Hayette',  desc:'Bourso',    def:260, color:'#fd79a8', angle:200, dist:140, r:30},
-    {id:'rachid',   label:'Rachid',   desc:'Bourso',    def:100, color:'#54a0ff', angle:160, dist:140, r:28},
-    {id:'vie',      label:'Vie Courante', desc:'Bourso', def:2000,color:'#53d769', angle:270, dist:145, r:42},
-    {id:'amine',    label:'Amine',    desc:'Bourso',    def:35,  color:'#ffa502', angle:60,  dist:130, r:24},
-    {id:'mayssa',   label:'Mayssa',   desc:'Bourso',    def:35,  color:'#a29bfe', angle:0,   dist:130, r:24},
-    {id:'assiya',   label:'Assiya',   desc:'Bourso',    def:35,  color:'#fd79a8', angle:320, dist:130, r:24},
-    {id:'epargne',  label:'Épargne',  desc:'Bourso',    def:0,   color:'#0fb9b1', angle:100, dist:150, r:38},
+  const CFG = [
+    {id:'hayette', label:'Hayette',    color:'#fd79a8', deg:205, dist:140, r:28},
+    {id:'rachid',  label:'Rachid',     color:'#54a0ff', deg:155, dist:140, r:26},
+    {id:'vie',     label:'Vie Courante', color:'#53d769', deg:275, dist:145, r:40},
+    {id:'amine',   label:'Amine',      color:'#ffa502', deg:55,  dist:130, r:22},
+    {id:'mayssa',  label:'Mayssa',     color:'#a29bfe', deg:360, dist:130, r:22},
+    {id:'assiya',  label:'Assiya',     color:'#fd79a8', deg:325, dist:130, r:22},
+    {id:'epargne', label:'Épargne',    color:'#0fb9b1', deg:95,  dist:150, r:34, grad:'url(#eg)'},
   ];
 
-  function deg2rad(d) { return d * Math.PI / 180; }
+  function deg(d) { return d * Math.PI / 180; }
 
   function getData() {
-    const v = id => parseInt(document.getElementById('e-'+id).value) || 0;
+    const g = id => parseInt(document.getElementById('i-'+id).value) || 0;
     return {
-      mr: v('mr'), mme: v('mme'), caf: v('caf'),
-      charges: v('charges'),
-      hayette: v('hayette'), rachid: v('rachid'), vie: v('vie'),
-      amine: v('amine'), mayssa: v('mayssa'), assiya: v('assiya'),
+      mr: g('mr'), mme: g('mme'), caf: g('caf'), charges: g('charges'),
+      hayette: g('hayette'), rachid: g('rachid'), vie: g('vie'),
+      amine: g('amine'), mayssa: g('mayssa'), assiya: g('assiya'),
     };
   }
 
-  function saveData(d) {
-    try { localStorage.setItem('bf-data', JSON.stringify(d)); } catch(e) {}
-  }
-  function loadData() {
-    try {
-      const r = localStorage.getItem('bf-data');
-      if (r) return JSON.parse(r);
-    } catch(e) {}
-    return null;
-  }
+  function save(d) { try{localStorage.setItem('bf',JSON.stringify(d))}catch(e){} }
+  function load() { try{var r=localStorage.getItem('bf');if(r)return JSON.parse(r)}catch(e){}return null }
+
+  function fmt(n) { return n.toLocaleString('fr-FR')+'€'; }
 
   function render(d) {
     if (!d) d = getData();
-    const totalRev = d.mr + d.mme + d.caf;
-    const resteDispatch = totalRev - d.charges;
+    var rev = d.mr + d.mme + d.caf;
+    var reste = rev - d.charges;
 
-    const dispatch = [
-      {id:'hayette', v:d.hayette}, {id:'rachid', v:d.rachid},
-      {id:'vie', v:d.vie}, {id:'amine', v:d.amine},
-      {id:'mayssa', v:d.mayssa}, {id:'assiya', v:d.assiya},
+    var dispatch = [
+      d.hayette, d.rachid, d.vie, d.amine, d.mayssa, d.assiya
     ];
-    const totalDispatch = dispatch.reduce((s,x) => s + x.v, 0);
-    const epargne = resteDispatch - totalDispatch;
+    var totalDisp = dispatch.reduce(function(a,b){return a+b},0);
+    var epargne = reste - totalDisp;
 
-    // Calculer les bulles
-    const bubbles = ACCOUNTS.map(a => {
-      let v = a.id === 'epargne' ? epargne : (dispatch.find(x => x.id === a.id)?.v || 0);
-      const rad = deg2rad(a.angle);
-      const x = CX + Math.cos(rad) * a.dist;
-      const y = CY + Math.sin(rad) * a.dist;
-      // taille proportionnelle
-      let r = a.r;
-      // épargne dynamic
-      if (a.id === 'epargne') {
-        const ratio = Math.min(Math.max(epargne / 500, 0.5), 3);
-        r = Math.round(28 + ratio * 10);
+    // Mise à jour texte CCF
+    document.getElementById('r1').textContent = '+'+fmt(d.mr);
+    document.getElementById('r2').textContent = '+'+fmt(d.mme);
+    document.getElementById('r3').textContent = '+'+fmt(d.caf);
+    document.getElementById('r4').textContent = '🔒 −'+fmt(d.charges)+' charges';
+    document.getElementById('r5').textContent = '↘ '+fmt(reste)+' à dispatcher';
+
+    var vals = {hayette:d.hayette, rachid:d.rachid, vie:d.vie, amine:d.amine, mayssa:d.mayssa, assiya:d.assiya, epargne:epargne};
+
+    // Flèches
+    var arrowG = document.getElementById('arrows');
+    arrowG.innerHTML = '';
+
+    // Bulles
+    var bubG = document.getElementById('bubbles');
+    bubG.innerHTML = '';
+
+    CFG.forEach(function(c) {
+      var v = vals[c.id];
+      if (v < 0) v = 0;
+      var rad = deg(c.deg);
+      var x = CX + Math.cos(rad) * c.dist;
+      var y = CY + Math.sin(rad) * c.dist;
+      var r = c.r;
+      if (c.id === 'epargne') {
+        // ajuster la taille selon le montant
+        var ratio = Math.min(Math.max(epargne/300, 0.6), 3);
+        r = Math.round(26 + ratio * 10);
       }
-      return {...a, v, x, y, r};
-    });
 
-    // LAYER CCF
-    const ccfLayer = document.getElementById('ccf-layer');
-    ccfLayer.innerHTML = '';
+      // Flèche
+      var dx = x - CX, dy = y - CY;
+      var a = Math.atan2(dy, dx);
+      var x1 = CX + Math.cos(a) * 62;
+      var y1 = CY + Math.sin(a) * 62;
+      var x2 = x - Math.cos(a) * (r + 5);
+      var y2 = y - Math.sin(a) * (r + 5);
 
-    // Glow
-    const glow = document.createElementNS(SVG_NS, 'circle');
-    glow.setAttribute('cx', CX); glow.setAttribute('cy', CY);
-    glow.setAttribute('r', 62);
-    glow.setAttribute('class', 'ccf-glow');
-    glow.setAttribute('filter', 'url(#glow)');
-    ccfLayer.appendChild(glow);
+      var line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', c.color);
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('opacity', '0.4');
+      arrowG.appendChild(line);
 
-    // Cercle CCF
-    const ccfCirc = document.createElementNS(SVG_NS, 'circle');
-    ccfCirc.setAttribute('cx', CX); ccfCirc.setAttribute('cy', CY);
-    ccfCirc.setAttribute('r', 52);
-    ccfCirc.setAttribute('fill', 'url(#ccfGrad)');
-    ccfCirc.setAttribute('stroke', '#54a0ff');
-    ccfCirc.setAttribute('stroke-width', '2.5');
-    ccfLayer.appendChild(ccfCirc);
-
-    // Texte CCF
-    const texts = [
-      {t:'CCF', y:-20, fs:14, fw:800, fill:'#54a0ff'},
-      {t:'Centre Nerveux', y:-6, fs:7, fw:500, fill:'#6a6a8a'},
-      {t:'+'+d.mr.toLocaleString('fr-FR')+'€', y:8, fs:9, fw:700, fill:'#53d769'},
-      {t:'+'+d.mme.toLocaleString('fr-FR')+'€', y:20, fs:9, fw:700, fill:'#53d769'},
-      {t:'+'+d.caf.toLocaleString('fr-FR')+'€', y:32, fs:9, fw:700, fill:'#53d769'},
-    ];
-    texts.forEach(t => {
-      const el = document.createElementNS(SVG_NS, 'text');
-      el.setAttribute('x', CX);
-      el.setAttribute('y', CY + t.y);
-      el.setAttribute('text-anchor', 'middle');
-      el.setAttribute('font-size', t.fs);
-      el.setAttribute('font-weight', t.fw);
-      el.setAttribute('fill', t.fill);
-      if (t.y < 0) el.setAttribute('dominant-baseline', 'auto');
-      else el.setAttribute('dominant-baseline', 'hanging');
-      el.textContent = t.t;
-      ccfLayer.appendChild(el);
-    });
-
-    // Charges fixes
-    const chargesY = CY + 48;
-    const chargesLine = document.createElementNS(SVG_NS, 'text');
-    chargesLine.setAttribute('x', CX); chargesLine.setAttribute('y', chargesY);
-    chargesLine.setAttribute('text-anchor', 'middle');
-    chargesLine.setAttribute('font-size', '8');
-    chargesLine.setAttribute('fill', '#ff6b81');
-    chargesLine.setAttribute('font-weight', '600');
-    chargesLine.setAttribute('dominant-baseline', 'hanging');
-    chargesLine.textContent = '🔒 −'+d.charges.toLocaleString('fr-FR')+'€ charges';
-    ccfLayer.appendChild(chargesLine);
-
-    // Reste à dispatcher
-    const resteY = chargesY + 16;
-    const resteText = document.createElementNS(SVG_NS, 'text');
-    resteText.setAttribute('x', CX); resteText.setAttribute('y', resteY);
-    resteText.setAttribute('text-anchor', 'middle');
-    resteText.setAttribute('font-size', '11');
-    resteText.setAttribute('fill', '#54a0ff');
-    resteText.setAttribute('font-weight', '800');
-    resteText.setAttribute('dominant-baseline', 'hanging');
-    resteText.textContent = '↘ '+resteDispatch.toLocaleString('fr-FR')+'€ à dispatcher';
-    ccfLayer.appendChild(resteText);
-
-    // ARROWS + LABELS
-    const arrowLayer = document.getElementById('arrows-layer');
-    const labelLayer = document.getElementById('labels-layer');
-    arrowLayer.innerHTML = '';
-    labelLayer.innerHTML = '';
-
-    bubbles.forEach(b => {
-      if (b.v <= 0 && b.id !== 'epargne') return;
-      if (b.id === 'epargne' && epargne <= 0) return;
-
-      // Diriger la flèche vers le bord de la bulle cible
-      const dx = b.x - CX, dy = b.y - CY;
-      const angle = Math.atan2(dy, dx);
-      const startR = 58;
-      const endR = b.r + 6;
-      const x1 = CX + Math.cos(angle) * startR;
-      const y1 = CY + Math.sin(angle) * startR;
-      const x2 = b.x - Math.cos(angle) * endR;
-      const y2 = b.y - Math.sin(angle) * endR;
-
-      // Flèche courbe? Non, droite pour lisibilité
-      const line = document.createElementNS(SVG_NS, 'line');
-      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-      line.setAttribute('class', 'flow-arrow');
-      line.setAttribute('stroke', b.color);
-      line.setAttribute('opacity', '0.5');
-      arrowLayer.appendChild(line);
-
-      // Label montant au milieu de la flèche
-      const mx = (x1 + x2) / 2;
-      const my = (y1 + y2) / 2 - 8;
-      const lbl = document.createElementNS(SVG_NS, 'text');
-      lbl.setAttribute('x', mx); lbl.setAttribute('y', my);
+      // Label flèche
+      var mx = (x1+x2)/2;
+      var my = (y1+y2)/2 - 7;
+      var lbl = document.createElementNS(NS, 'text');
+      lbl.setAttribute('x', mx);
+      lbl.setAttribute('y', my);
       lbl.setAttribute('text-anchor', 'middle');
-      lbl.setAttribute('font-size', '9');
-      lbl.setAttribute('fill', b.color);
+      lbl.setAttribute('font-size', '8');
       lbl.setAttribute('font-weight', '800');
+      lbl.setAttribute('fill', c.color);
       lbl.setAttribute('opacity', '0.85');
-      lbl.textContent = b.v.toLocaleString('fr-FR')+'€';
-      labelLayer.appendChild(lbl);
-    });
+      lbl.textContent = v.toLocaleString('fr-FR')+'€';
+      arrowG.appendChild(lbl);
 
-    // BUBBLES
-    const bubbleLayer = document.getElementById('bubbles-layer');
-    bubbleLayer.innerHTML = '';
+      // Bulle
+      var g = document.createElementNS(NS, 'g');
+      var fill = c.grad || c.color;
 
-    bubbles.forEach(b => {
-      if (b.v <= 0 && b.id !== 'epargne') return;
-      if (b.id === 'epargne' && epargne <= 0) {
-        // Afficher quand même avec "0€"
-      }
+      var circ = document.createElementNS(NS, 'circle');
+      circ.setAttribute('cx', x);
+      circ.setAttribute('cy', y);
+      circ.setAttribute('r', r);
+      circ.setAttribute('fill', fill);
+      circ.setAttribute('stroke', c.color);
+      circ.setAttribute('stroke-width', '2');
+      circ.setAttribute('opacity', '0.92');
+      g.appendChild(circ);
 
-      const g = document.createElementNS(SVG_NS, 'g');
-      g.setAttribute('class', 'bubble');
-      g.setAttribute('data-id', b.id);
-
-      const gradId = b.id === 'epargne' ? 'url(#epargneGrad)' : b.color;
-
-      // Cercle avec ombre
-      const circle = document.createElementNS(SVG_NS, 'circle');
-      circle.setAttribute('cx', b.x); circle.setAttribute('cy', b.y);
-      circle.setAttribute('r', b.r);
-      circle.setAttribute('fill', b.id === 'epargne' ? 'url(#epargneGrad)' : b.color);
-      circle.setAttribute('stroke', b.color);
-      circle.setAttribute('stroke-width', '2');
-      circle.setAttribute('filter', 'url(#glow)');
-      circle.setAttribute('opacity', '0.9');
-      g.appendChild(circle);
-
-      // Nom en haut de la bulle
-      const name = document.createElementNS(SVG_NS, 'text');
-      name.setAttribute('x', b.x);
-      name.setAttribute('y', b.y - 2);
+      // Nom (en haut de la bulle)
+      var name = document.createElementNS(NS, 'text');
+      name.setAttribute('x', x);
+      name.setAttribute('y', y - 1);
       name.setAttribute('text-anchor', 'middle');
-      name.setAttribute('font-size', b.id === 'epargne' || b.id === 'vie' ? '8' : '8');
+      name.setAttribute('font-size', c.id === 'epargne' || c.id === 'vie' ? '8' : '7.5');
       name.setAttribute('font-weight', '700');
       name.setAttribute('fill', '#fff');
       name.setAttribute('dominant-baseline', 'auto');
-      name.textContent = b.label;
+      name.textContent = c.label;
       g.appendChild(name);
 
       // Montant
-      const amt = document.createElementNS(SVG_NS, 'text');
-      amt.setAttribute('x', b.x);
-      amt.setAttribute('y', b.y + 4);
+      var amt = document.createElementNS(NS, 'text');
+      amt.setAttribute('x', x);
+      amt.setAttribute('y', y + 4);
       amt.setAttribute('text-anchor', 'middle');
-      amt.setAttribute('font-size', b.v >= 1000 ? '12' : b.v >= 100 ? '11' : '10');
+      var sz = '10';
+      if (v >= 1000) sz = '12';
+      else if (v >= 100) sz = '11';
+      amt.setAttribute('font-size', sz);
       amt.setAttribute('font-weight', '800');
       amt.setAttribute('fill', '#fff');
       amt.setAttribute('dominant-baseline', 'hanging');
-      amt.textContent = b.v.toLocaleString('fr-FR')+'€';
+      amt.textContent = v.toLocaleString('fr-FR')+'€';
       g.appendChild(amt);
 
-      // Description
-      const desc = document.createElementNS(SVG_NS, 'text');
-      desc.setAttribute('x', b.x);
-      desc.setAttribute('y', b.y + b.r - 6);
-      desc.setAttribute('text-anchor', 'middle');
-      desc.setAttribute('font-size', '6.5');
-      desc.setAttribute('fill', 'rgba(255,255,255,0.4)');
-      desc.setAttribute('dominant-baseline', 'hanging');
-      desc.textContent = b.desc;
-      g.appendChild(desc);
+      // Description (bas de la bulle)
+      if (r > 18) {
+        var desc = document.createElementNS(NS, 'text');
+        desc.setAttribute('x', x);
+        desc.setAttribute('y', y + r - 5);
+        desc.setAttribute('text-anchor', 'middle');
+        desc.setAttribute('font-size', '6');
+        desc.setAttribute('fill', 'rgba(255,255,255,0.35)');
+        desc.setAttribute('dominant-baseline', 'hanging');
+        desc.textContent = 'Bourso';
+        g.appendChild(desc);
+      }
 
-      bubbleLayer.appendChild(g);
+      bubG.appendChild(g);
     });
   }
 
-  // UI
-  function applyData(d) {
-    document.getElementById('e-mr').value = d.mr;
-    document.getElementById('e-mme').value = d.mme;
-    document.getElementById('e-caf').value = d.caf;
-    document.getElementById('e-charges').value = d.charges;
-    document.getElementById('e-hayette').value = d.hayette;
-    document.getElementById('e-rachid').value = d.rachid;
-    document.getElementById('e-viecourante').value = d.vie;
-    document.getElementById('e-amine').value = d.amine;
-    document.getElementById('e-mayssa').value = d.mayssa;
-    document.getElementById('e-assiya').value = d.assiya;
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg || '✅ Mis à jour !';
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 2000);
-  }
-
-  // INIT
-  const saved = loadData();
+  // Init
+  var saved = load();
   if (saved) {
-    applyData(saved);
+    Object.keys(saved).forEach(function(k) {
+      var el = document.getElementById('i-'+k);
+      if (el) el.value = saved[k];
+    });
     render(saved);
   } else {
     render(getData());
   }
 
-  // Live preview on input change
-  document.querySelectorAll('.edit-panel input').forEach(inp => {
-    inp.addEventListener('input', () => {
-      const d = getData();
-      render(d);
+  // Live preview
+  document.querySelectorAll('.panel input').forEach(function(inp) {
+    inp.addEventListener('input', function() {
+      render(getData());
     });
   });
 
   // Toggle panel
-  document.getElementById('edit-toggle').addEventListener('click', function() {
-    const panel = document.getElementById('edit-panel');
-    panel.classList.toggle('open');
-    if (!panel.classList.contains('open')) {
-      // On ferme, recharger les valeurs depuis les inputs
-    }
+  document.getElementById('editBtn').addEventListener('click', function() {
+    document.getElementById('panel').classList.toggle('open');
   });
 
   // Save
-  document.getElementById('edit-save').addEventListener('click', function() {
-    const d = getData();
-    saveData(d);
+  document.getElementById('saveBtn').addEventListener('click', function() {
+    var d = getData();
+    save(d);
     render(d);
-    document.getElementById('edit-panel').classList.remove('open');
-    showToast('✅ Montants sauvegardés !');
+    document.getElementById('panel').classList.remove('open');
+    var t = document.getElementById('toast');
+    t.style.display = 'block';
+    setTimeout(function(){t.style.display='none'}, 2000);
   });
 })();
 </script>

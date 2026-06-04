@@ -223,13 +223,13 @@
   // Comptes: [id, label, color, angle°, distance, rayon]
   // Angles: 0=droite, 90=bas, 180=gauche, 270=haut
   var CFG = [
-    ['hayette',  'Hayette',     '#fd79a8', 200, 135, 28],
-    ['rachid',   'Rachid',      '#54a0ff', 155, 135, 26],
-    ['vie',      'Vie Courante','#53d769', 270, 140, 40],
-    ['amine',    'Amine',       '#ffa502', 50,  130, 22],
-    ['mayssa',   'Mayssa',      '#a29bfe', 10,  130, 22],
-    ['assiya',   'Assiya',      '#fd79a8', 330, 135, 22],
-    ['epargne',  'Épargne',     '#0fb9b1', 95,  150, 34],
+    ['hayette',  'Bourso Hayette','#fd79a8', 200, 140, 30],
+    ['rachid',   'Bourso Rachid', '#54a0ff', 155, 145, 28],
+    ['vie',      'Bourso joint\nVie courante','#53d769', 270, 150, 44],
+    ['amine',    'Bourso Amine',  '#ffa502', 50,  135, 24],
+    ['mayssa',   'Bourso Mayssa', '#a29bfe', 10,  140, 24],
+    ['assiya',   'Bourso Assiya', '#fd79a8', 330, 140, 24],
+    ['epargne',  'Bourso joint\nÉpargne', '#0fb9b1', 95,  160, 38],
   ];
 
   function deg(d) { return d * Math.PI / 180; }
@@ -336,17 +336,20 @@
       circ.setAttribute('opacity', '0.92');
       g.appendChild(circ);
 
-      // Nom
-      var name = document.createElementNS(NS, 'text');
-      name.setAttribute('x', x);
-      name.setAttribute('y', y - (r > 30 ? 4 : 1));
-      name.setAttribute('text-anchor', 'middle');
-      name.setAttribute('font-size', (r > 30) ? '8' : '7');
-      name.setAttribute('font-weight', '700');
-      name.setAttribute('fill', '#fff');
-      name.setAttribute('dominant-baseline', 'auto');
-      name.textContent = label;
-      g.appendChild(name);
+      // Nom (gère les retours à la ligne avec \n)
+      var lines = label.split('\n');
+      lines.forEach(function(l, i) {
+        var name = document.createElementNS(NS, 'text');
+        name.setAttribute('x', x);
+        name.setAttribute('y', y - (r > 30 ? 6 - i*7 : 1 - i*6));
+        name.setAttribute('text-anchor', 'middle');
+        name.setAttribute('font-size', (r > 30) ? '7' : '6.5');
+        name.setAttribute('font-weight', '700');
+        name.setAttribute('fill', '#fff');
+        name.setAttribute('dominant-baseline', 'auto');
+        name.textContent = l;
+        g.appendChild(name);
+      });
 
       // Montant
       var amt = document.createElementNS(NS, 'text');

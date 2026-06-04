@@ -3,271 +3,247 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Budget Familial</title>
+<title>Budget Familial — CCF</title>
 <style>
-  :root {
-    --ccf: #1a1a2e;
-    --bourso: #16213e;
-    --epargne: #0f3460;
-    --vert: #53d769;
-    --rouge: #ff4757;
-    --orange: #ffa502;
-    --bleu-clair: #54a0ff;
-    --violet: #a29bfe;
-    --rose: #fd79a8;
-    --fond: #0a0a1a;
-    --carte: #1e1e3a;
-    --texte: #e8e8f0;
-    --texte-muted: #8888aa;
-  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --fond: #0d0d1f;
+    --carte: #16163a;
+    --texte: #e8e8f0;
+    --muted: #6a6a8a;
+    --ccf-color: #54a0ff;
+    --rose: #fd79a8;
+    --bleu: #54a0ff;
+    --vert: #53d769;
+    --orange: #ffa502;
+    --violet: #a29bfe;
+    --cyan: #0fb9b1;
+  }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: var(--fond);
     color: var(--texte);
     min-height: 100vh;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .container { max-width: 480px; margin: 0 auto; padding: 12px; }
+  .wrapper {
+    max-width: 500px;
+    width: 100%;
+    padding: 16px 12px 40px;
+  }
   h1 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     text-align: center;
-    padding: 16px 0 8px;
-    background: linear-gradient(135deg, var(--bleu-clair), var(--violet));
+    background: linear-gradient(135deg, var(--ccf-color), var(--violet));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 700;
+    padding: 12px 0 4px;
   }
-  .subtitle {
+  .sub {
     text-align: center;
-    font-size: 0.75rem;
-    color: var(--texte-muted);
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-  }
-  /* Carte CCF centrale */
-  .hub-card {
-    background: linear-gradient(135deg, #1a1a3e, #16213e);
-    border: 2px solid var(--bleu-clair);
-    border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(84,160,255,0.15);
-    position: relative;
-  }
-  .hub-card::before {
-    content: '🏦 CENTRE NERVEUX';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bleu-clair);
-    color: #000;
-    font-size: 0.6rem;
-    font-weight: 700;
-    padding: 2px 14px;
-    border-radius: 10px;
-    letter-spacing: 1px;
-  }
-  .hub-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    font-size: 1rem;
-    color: var(--bleu-clair);
-  }
-  .hub-title span { font-size: 0.65rem; color: var(--texte-muted); }
-  .flow-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.85rem;
-  }
-  .flow-row:last-child { border: none; }
-  .flow-row .label { color: var(--texte-muted); }
-  .flow-row .value { font-weight: 700; }
-  .flow-row .value.in { color: var(--vert); }
-  .hub-total {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 2px solid var(--bleu-clair);
-    font-size: 1rem;
-    font-weight: 700;
-  }
-  .hub-total .total-label { color: var(--texte-muted); }
-  .hub-total .total-value { color: var(--bleu-clair); }
-
-  /* Connecteur */
-  .connector-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 4px 0 4px 20px;
-    font-size: 0.7rem;
-    color: var(--texte-muted);
-  }
-  .connector-line .arrow { color: var(--orange); font-size: 0.9rem; }
-
-  /* Cartes des comptes */
-  .accounts-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .account-card {
-    background: var(--carte);
-    border-radius: 16px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-left: 4px solid transparent;
-    transition: all 0.2s;
-  }
-  .account-card:active { transform: scale(0.97); }
-  .account-card .emoji { font-size: 1.5rem; margin-right: 12px; }
-  .account-info { flex: 1; }
-  .account-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  .account-desc {
     font-size: 0.65rem;
-    color: var(--texte-muted);
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
   }
-  .account-amount {
-    font-size: 1rem;
+
+  /* CANVAS DIAGRAMME */
+  .diagram-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto 16px;
+    aspect-ratio: 1 / 1.1;
+  }
+  #diagram {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* BULLE CCF */
+  .ccf-bubble {
+    fill: #1e2a5a;
+    stroke: var(--ccf-color);
+    stroke-width: 2;
+    cursor: pointer;
+    transition: stroke-width 0.2s;
+  }
+  .ccf-glow {
+    fill: none;
+    stroke: var(--ccf-color);
+    stroke-width: 1;
+    opacity: 0.2;
+  }
+
+  /* FLECHES */
+  .flow-arrow {
+    stroke: var(--muted);
+    stroke-width: 1.5;
+    fill: none;
+    marker-end: url(#arrowhead);
+    opacity: 0.7;
+  }
+  .flow-label {
+    font-size: 9px;
+    fill: var(--muted);
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-weight: 600;
+  }
+
+  /* BULLES COMPTES */
+  .bubble {
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .bubble circle {
+    stroke-width: 2.5;
+    opacity: 0.9;
+  }
+  .bubble text.name {
+    font-size: 9px;
     font-weight: 700;
-    white-space: nowrap;
+    text-anchor: middle;
+    fill: #fff;
+    dominant-baseline: auto;
   }
-  .account-amount .currency { font-size: 0.7rem; color: var(--texte-muted); }
+  .bubble text.amount {
+    font-size: 11px;
+    font-weight: 800;
+    text-anchor: middle;
+    fill: #fff;
+    dominant-baseline: hanging;
+  }
+  .bubble text.desc {
+    font-size: 7px;
+    text-anchor: middle;
+    fill: rgba(255,255,255,0.5);
+    dominant-baseline: hanging;
+  }
 
-  /* Couleurs par compte */
-  .card-hayette { border-left-color: var(--rose); }
-  .card-hayette .account-amount { color: var(--rose); }
-  .card-rachid { border-left-color: var(--bleu-clair); }
-  .card-rachid .account-amount { color: var(--bleu-clair); }
-  .card-viecourante { border-left-color: var(--vert); }
-  .card-viecourante .account-amount { color: var(--vert); }
-  .card-amine { border-left-color: var(--orange); }
-  .card-amine .account-amount { color: var(--orange); }
-  .card-mayssa { border-left-color: var(--violet); }
-  .card-mayssa .account-amount { color: var(--violet); }
-  .card-assiya { border-left-color: var(--rose); }
-  .card-assiya .account-amount { color: var(--rose); }
-  .card-epargne { border-left-color: #0fb9b1; }
-  .card-epargne .account-amount { color: #0fb9b1; }
+  /* LÉGENDE REVENUS */
+  .revenue-label {
+    font-size: 8px;
+    fill: var(--muted);
+    text-anchor: middle;
+    font-weight: 500;
+  }
+  .revenue-value {
+    font-size: 10px;
+    font-weight: 700;
+    text-anchor: middle;
+    fill: var(--vert);
+  }
+  .charge-label {
+    font-size: 8px;
+    fill: var(--muted);
+    text-anchor: middle;
+  }
+  .charge-value {
+    font-size: 10px;
+    font-weight: 700;
+    text-anchor: middle;
+    fill: #ff6b81;
+  }
+  .reste-label {
+    font-size: 8px;
+    fill: var(--muted);
+    text-anchor: middle;
+  }
+  .reste-value {
+    font-size: 12px;
+    font-weight: 800;
+    text-anchor: middle;
+    fill: var(--ccf-color);
+  }
 
-  /* Section édition */
+  /* PANEL EDITION */
   .edit-toggle {
     display: block;
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: var(--carte);
-    border: 1px dashed var(--texte-muted);
-    border-radius: 12px;
-    color: var(--texte-muted);
+    border: 1px dashed rgba(255,255,255,0.15);
+    border-radius: 14px;
+    color: var(--muted);
     font-size: 0.85rem;
-    cursor: pointer;
     text-align: center;
+    cursor: pointer;
     transition: all 0.2s;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
-  .edit-toggle:hover { border-color: var(--bleu-clair); color: var(--bleu-clair); }
+  .edit-toggle:hover { border-color: var(--ccf-color); color: var(--ccf-color); }
 
   .edit-panel {
     display: none;
     background: var(--carte);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 16px;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 14px;
     animation: slideDown 0.3s ease;
   }
   .edit-panel.open { display: block; }
 
   @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(-12px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   .edit-panel h3 {
-    font-size: 0.8rem;
-    color: var(--texte-muted);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .edit-group {
+    font-size: 0.75rem;
+    color: var(--muted);
     margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .edit-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
   }
   .edit-group label {
     display: block;
-    font-size: 0.7rem;
-    color: var(--texte-muted);
-    margin-bottom: 4px;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 3px;
   }
   .edit-group input {
     width: 100%;
     padding: 10px 12px;
     background: var(--fond);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
     color: var(--texte);
     font-size: 0.85rem;
     outline: none;
     transition: border 0.2s;
   }
-  .edit-group input:focus { border-color: var(--bleu-clair); }
+  .edit-group input:focus { border-color: var(--ccf-color); }
+  .edit-full { grid-column: 1 / -1; }
 
   .edit-save {
     width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, var(--bleu-clair), var(--violet));
+    padding: 14px;
+    background: linear-gradient(135deg, var(--ccf-color), var(--violet));
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     color: #fff;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   .edit-save:active { opacity: 0.8; }
 
-  .summary-bar {
-    background: var(--carte);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 16px;
-  }
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    padding: 4px 0;
-  }
-  .summary-row .text { color: var(--texte-muted); }
-  .summary-row.remaining .value { color: var(--orange); font-weight: 700; }
-  .summary-row.balance .value { color: var(--vert); font-weight: 700; }
-
-  footer {
-    text-align: center;
-    font-size: 0.6rem;
-    color: var(--texte-muted);
-    padding: 20px 0 30px;
-    opacity: 0.5;
-  }
-
-  /* Toast */
   .toast {
     position: fixed;
-    bottom: 20px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--vert);
@@ -275,341 +251,391 @@
     padding: 10px 24px;
     border-radius: 30px;
     font-size: 0.8rem;
-    font-weight: 600;
+    font-weight: 700;
     display: none;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(83,215,105,0.3);
+    box-shadow: 0 4px 24px rgba(83,215,105,0.3);
     animation: fadeIn 0.3s ease;
   }
-  @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.55rem;
+    color: var(--muted);
+    opacity: 0.4;
+    padding-top: 8px;
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="wrapper">
   <h1>💰 Budget Familial</h1>
-  <p class="subtitle">ORGANISATION DES COMPTES — CCF & BOURSORAMA</p>
+  <p class="sub">CCF — CENTRE NERVEUX</p>
 
-  <!-- CARTE CCF -->
-  <div class="hub-card" id="hub-card">
-    <div class="hub-title">
-      <span>🏦</span> Compte CCF — Centre Nerveux
-      <span>réceptions</span>
-    </div>
-    <div class="flow-row">
-      <span class="label">👤 Salaire Mr</span>
-      <span class="value in" id="salaire-mr">+2 500 €</span>
-    </div>
-    <div class="flow-row">
-      <span class="label">👩 Salaire Mme</span>
-      <span class="value in" id="salaire-mme">+1 800 €</span>
-    </div>
-    <div class="flow-row">
-      <span class="label">🏛️ CAF</span>
-      <span class="value in" id="caf">+860 €</span>
-    </div>
-    <div class="flow-row" style="margin-top:4px;">
-      <span class="label">🔒 Charges fixes</span>
-      <span class="value" style="color:var(--rouge)">−1 100 €</span>
-    </div>
-    <div class="hub-total">
-      <span class="total-label">💶 Reste à dispatcher</span>
-      <span class="total-value" id="reste-a-dispatcher">4 060 €</span>
-    </div>
-  </div>
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 440 480" id="diagram" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#6a6a8a" />
+        </marker>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="ccfGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#2a3a7a"/>
+          <stop offset="100%" stop-color="#16215a"/>
+        </radialGradient>
+        <radialGradient id="epargneGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#1a7a72"/>
+          <stop offset="100%" stop-color="#0f4a44"/>
+        </radialGradient>
+      </defs>
 
-  <div class="connector-line">
-    <span class="arrow">⬇</span> Dispatch depuis CCF vers
-  </div>
+      <!-- FLECHES + ÉTIQUETTES (rendues par JS) -->
+      <g id="arrows-layer"></g>
+      <g id="labels-layer"></g>
 
-  <!-- COMPTES -->
-  <div class="accounts-grid" id="accounts-grid">
-    <div class="account-card card-hayette">
-      <span class="emoji">👩‍🦰</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Hayette</div>
-        <div class="account-desc">Budget personnel Mme</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-hayette">260</span></div>
-    </div>
-    <div class="account-card card-rachid">
-      <span class="emoji">👨</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Rachid</div>
-        <div class="account-desc">Budget personnel Mr</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-rachid">100</span></div>
-    </div>
-    <div class="account-card card-viecourante">
-      <span class="emoji">🛒</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Vie Courante</div>
-        <div class="account-desc">Courses & dépenses quotidiennes</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-viecourante">2 000</span></div>
-    </div>
-    <div class="account-card card-amine">
-      <span class="emoji">🧑</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Amine</div>
-        <div class="account-desc">Argent de poche</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-amine">35</span></div>
-    </div>
-    <div class="account-card card-mayssa">
-      <span class="emoji">👧</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Mayssa</div>
-        <div class="account-desc">Argent de poche</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-mayssa">35</span></div>
-    </div>
-    <div class="account-card card-assiya">
-      <span class="emoji">👶</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Assiya</div>
-        <div class="account-desc">Argent de poche</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-assiya">35</span></div>
-    </div>
-    <div class="account-card card-epargne">
-      <span class="emoji">🏦</span>
-      <div class="account-info">
-        <div class="account-name">Bourso Épargne</div>
-        <div class="account-desc">Tout le reste — épargne</div>
-      </div>
-      <div class="account-amount"><span class="currency">€</span> <span id="montant-epargne">—</span></div>
-    </div>
+      <!-- BULLES (rendues par JS) -->
+      <g id="bubbles-layer"></g>
+
+      <!-- CCF (rendu par JS car centré dynamiquement) -->
+      <g id="ccf-layer"></g>
+    </svg>
   </div>
 
   <!-- RÉSUMÉ -->
-  <div class="summary-bar">
-    <div class="summary-row">
-      <span class="text">💰 Total revenus</span>
-      <span id="total-revenus">5 160 €</span>
-    </div>
-    <div class="summary-row">
-      <span class="text">🔒 Charges fixes</span>
-      <span style="color:var(--rouge)">−1 100 €</span>
-    </div>
-    <div class="summary-row">
-      <span class="text">📤 Total dispatché</span>
-      <span id="total-dispatch">2 465 €</span>
-    </div>
-    <div class="summary-row remaining">
-      <span class="text">📥 Reste vers Épargne</span>
-      <span class="value" id="reste-epargne">1 595 €</span>
-    </div>
-  </div>
-
-  <!-- MODIFIER -->
-  <button class="edit-toggle" id="edit-toggle">✏️ Modifier les montants</button>
+  <div class="edit-toggle" id="edit-toggle">✏️ Modifier les montants</div>
 
   <div class="edit-panel" id="edit-panel">
     <h3>Revenus</h3>
-    <div class="edit-group">
-      <label>Salaire Mr (€)</label>
-      <input type="number" id="edit-mr" value="2500">
+    <div class="edit-row">
+      <div class="edit-group"><label>Salaire Mr (€)</label><input type="number" id="e-mr" value="2500"></div>
+      <div class="edit-group"><label>Salaire Mme (€)</label><input type="number" id="e-mme" value="1800"></div>
+      <div class="edit-group"><label>CAF (€)</label><input type="number" id="e-caf" value="860"></div>
+      <div class="edit-group"><label>Charges fixes (€)</label><input type="number" id="e-charges" value="1100"></div>
     </div>
-    <div class="edit-group">
-      <label>Salaire Mme (€)</label>
-      <input type="number" id="edit-mme" value="1800">
+    <h3>Dispatch</h3>
+    <div class="edit-row">
+      <div class="edit-group"><label>Hayette (€)</label><input type="number" id="e-hayette" value="260"></div>
+      <div class="edit-group"><label>Rachid (€)</label><input type="number" id="e-rachid" value="100"></div>
+      <div class="edit-group"><label>Vie Courante (€)</label><input type="number" id="e-viecourante" value="2000"></div>
+      <div class="edit-group"><label>Amine (€)</label><input type="number" id="e-amine" value="35"></div>
+      <div class="edit-group"><label>Mayssa (€)</label><input type="number" id="e-mayssa" value="35"></div>
+      <div class="edit-group"><label>Assiya (€)</label><input type="number" id="e-assiya" value="35"></div>
     </div>
-    <div class="edit-group">
-      <label>CAF (€)</label>
-      <input type="number" id="edit-caf" value="860">
-    </div>
-    <div class="edit-group">
-      <label>Charges fixes (€)</label>
-      <input type="number" id="edit-charges" value="1100">
-    </div>
-
-    <h3 style="margin-top:14px;">Dispatch</h3>
-    <div class="edit-group">
-      <label>Bourso Hayette (€)</label>
-      <input type="number" id="edit-hayette" value="260">
-    </div>
-    <div class="edit-group">
-      <label>Bourso Rachid (€)</label>
-      <input type="number" id="edit-rachid" value="100">
-    </div>
-    <div class="edit-group">
-      <label>Bourso Vie Courante (€)</label>
-      <input type="number" id="edit-viecourante" value="2000">
-    </div>
-    <div class="edit-group">
-      <label>Bourso Amine (€)</label>
-      <input type="number" id="edit-amine" value="35">
-    </div>
-    <div class="edit-group">
-      <label>Bourso Mayssa (€)</label>
-      <input type="number" id="edit-mayssa" value="35">
-    </div>
-    <div class="edit-group">
-      <label>Bourso Assiya (€)</label>
-      <input type="number" id="edit-assiya" value="35">
-    </div>
-
     <button class="edit-save" id="edit-save">💾 Enregistrer</button>
   </div>
 
-  <footer>Budget Familial · Données stockées localement</footer>
+  <footer>Budget Familial · Données sauvegardées automatiquement</footer>
 </div>
 
-<div class="toast" id="toast">✅ Montants mis à jour !</div>
+<div class="toast" id="toast">✅ Mis à jour !</div>
 
 <script>
 (function() {
-  // Éléments
-  const el = {
-    mr: document.getElementById('salaire-mr'),
-    mme: document.getElementById('salaire-mme'),
-    caf: document.getElementById('caf'),
-    dispatcher: document.getElementById('reste-a-dispatcher'),
-    hayette: document.getElementById('montant-hayette'),
-    rachid: document.getElementById('montant-rachid'),
-    viecourante: document.getElementById('montant-viecourante'),
-    amine: document.getElementById('montant-amine'),
-    mayssa: document.getElementById('montant-mayssa'),
-    assiya: document.getElementById('montant-assiya'),
-    epargne: document.getElementById('montant-epargne'),
-    totalRevenus: document.getElementById('total-revenus'),
-    totalDispatch: document.getElementById('total-dispatch'),
-    resteEpargne: document.getElementById('reste-epargne'),
-  };
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const CX = 220, CY = 195; // centre CCF
 
-  function format(n) {
-    return n.toLocaleString('fr-FR') + ' €';
-  }
+  // Définition des comptes: [id, label, desc, montant défaut, couleur, angle (degrés), distance du centre, rayon bulle]
+  const ACCOUNTS = [
+    {id:'hayette',  label:'Hayette',  desc:'Bourso',    def:260, color:'#fd79a8', angle:200, dist:140, r:30},
+    {id:'rachid',   label:'Rachid',   desc:'Bourso',    def:100, color:'#54a0ff', angle:160, dist:140, r:28},
+    {id:'vie',      label:'Vie Courante', desc:'Bourso', def:2000,color:'#53d769', angle:270, dist:145, r:42},
+    {id:'amine',    label:'Amine',    desc:'Bourso',    def:35,  color:'#ffa502', angle:60,  dist:130, r:24},
+    {id:'mayssa',   label:'Mayssa',   desc:'Bourso',    def:35,  color:'#a29bfe', angle:0,   dist:130, r:24},
+    {id:'assiya',   label:'Assiya',   desc:'Bourso',    def:35,  color:'#fd79a8', angle:320, dist:130, r:24},
+    {id:'epargne',  label:'Épargne',  desc:'Bourso',    def:0,   color:'#0fb9b1', angle:100, dist:150, r:38},
+  ];
 
-  function update(data) {
-    // Appliquer au hub
-    el.mr.textContent = '+' + format(data.salaireMr).replace(' €', '') + ' €';
-    el.mme.textContent = '+' + format(data.salaireMme).replace(' €', '') + ' €';
-    el.caf.textContent = '+' + format(data.caf).replace(' €', '') + ' €';
-
-    const totalRevenus = data.salaireMr + data.salaireMme + data.caf;
-    const resteDispatch = totalRevenus - data.chargesFixes;
-
-    el.dispatcher.textContent = format(resteDispatch);
-    el.totalRevenus.textContent = format(totalRevenus);
-
-    // Appliquer au dispatch
-    el.hayette.textContent = data.hayette.toLocaleString('fr-FR');
-    el.rachid.textContent = data.rachid.toLocaleString('fr-FR');
-    el.viecourante.textContent = data.viecourante.toLocaleString('fr-FR');
-    el.amine.textContent = data.amine.toLocaleString('fr-FR');
-    el.mayssa.textContent = data.mayssa.toLocaleString('fr-FR');
-    el.assiya.textContent = data.assiya.toLocaleString('fr-FR');
-
-    const totalDispatch = data.hayette + data.rachid + data.viecourante + data.amine + data.mayssa + data.assiya;
-    const resteEpargne = resteDispatch - totalDispatch;
-
-    el.totalDispatch.textContent = format(totalDispatch);
-    el.resteEpargne.textContent = format(resteEpargne);
-    el.epargne.textContent = resteEpargne.toLocaleString('fr-FR');
-  }
+  function deg2rad(d) { return d * Math.PI / 180; }
 
   function getData() {
+    const v = id => parseInt(document.getElementById('e-'+id).value) || 0;
     return {
-      salaireMr: parseInt(document.getElementById('edit-mr').value) || 0,
-      salaireMme: parseInt(document.getElementById('edit-mme').value) || 0,
-      caf: parseInt(document.getElementById('edit-caf').value) || 0,
-      chargesFixes: parseInt(document.getElementById('edit-charges').value) || 0,
-      hayette: parseInt(document.getElementById('edit-hayette').value) || 0,
-      rachid: parseInt(document.getElementById('edit-rachid').value) || 0,
-      viecourante: parseInt(document.getElementById('edit-viecourante').value) || 0,
-      amine: parseInt(document.getElementById('edit-amine').value) || 0,
-      mayssa: parseInt(document.getElementById('edit-mayssa').value) || 0,
-      assiya: parseInt(document.getElementById('edit-assiya').value) || 0,
+      mr: v('mr'), mme: v('mme'), caf: v('caf'),
+      charges: v('charges'),
+      hayette: v('hayette'), rachid: v('rachid'), vie: v('vie'),
+      amine: v('amine'), mayssa: v('mayssa'), assiya: v('assiya'),
     };
   }
 
-  function saveToStorage(data) {
-    try {
-      localStorage.setItem('budget-familial', JSON.stringify(data));
-    } catch(e) {}
+  function saveData(d) {
+    try { localStorage.setItem('bf-data', JSON.stringify(d)); } catch(e) {}
   }
-
-  function loadFromStorage() {
+  function loadData() {
     try {
-      const raw = localStorage.getItem('budget-familial');
-      if (raw) return JSON.parse(raw);
+      const r = localStorage.getItem('bf-data');
+      if (r) return JSON.parse(r);
     } catch(e) {}
     return null;
   }
 
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg || '✅ Montants mis à jour !';
-    toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 2200);
+  function render(d) {
+    if (!d) d = getData();
+    const totalRev = d.mr + d.mme + d.caf;
+    const resteDispatch = totalRev - d.charges;
+
+    const dispatch = [
+      {id:'hayette', v:d.hayette}, {id:'rachid', v:d.rachid},
+      {id:'vie', v:d.vie}, {id:'amine', v:d.amine},
+      {id:'mayssa', v:d.mayssa}, {id:'assiya', v:d.assiya},
+    ];
+    const totalDispatch = dispatch.reduce((s,x) => s + x.v, 0);
+    const epargne = resteDispatch - totalDispatch;
+
+    // Calculer les bulles
+    const bubbles = ACCOUNTS.map(a => {
+      let v = a.id === 'epargne' ? epargne : (dispatch.find(x => x.id === a.id)?.v || 0);
+      const rad = deg2rad(a.angle);
+      const x = CX + Math.cos(rad) * a.dist;
+      const y = CY + Math.sin(rad) * a.dist;
+      // taille proportionnelle
+      let r = a.r;
+      // épargne dynamic
+      if (a.id === 'epargne') {
+        const ratio = Math.min(Math.max(epargne / 500, 0.5), 3);
+        r = Math.round(28 + ratio * 10);
+      }
+      return {...a, v, x, y, r};
+    });
+
+    // LAYER CCF
+    const ccfLayer = document.getElementById('ccf-layer');
+    ccfLayer.innerHTML = '';
+
+    // Glow
+    const glow = document.createElementNS(SVG_NS, 'circle');
+    glow.setAttribute('cx', CX); glow.setAttribute('cy', CY);
+    glow.setAttribute('r', 62);
+    glow.setAttribute('class', 'ccf-glow');
+    glow.setAttribute('filter', 'url(#glow)');
+    ccfLayer.appendChild(glow);
+
+    // Cercle CCF
+    const ccfCirc = document.createElementNS(SVG_NS, 'circle');
+    ccfCirc.setAttribute('cx', CX); ccfCirc.setAttribute('cy', CY);
+    ccfCirc.setAttribute('r', 52);
+    ccfCirc.setAttribute('fill', 'url(#ccfGrad)');
+    ccfCirc.setAttribute('stroke', '#54a0ff');
+    ccfCirc.setAttribute('stroke-width', '2.5');
+    ccfLayer.appendChild(ccfCirc);
+
+    // Texte CCF
+    const texts = [
+      {t:'CCF', y:-20, fs:14, fw:800, fill:'#54a0ff'},
+      {t:'Centre Nerveux', y:-6, fs:7, fw:500, fill:'#6a6a8a'},
+      {t:'+'+d.mr.toLocaleString('fr-FR')+'€', y:8, fs:9, fw:700, fill:'#53d769'},
+      {t:'+'+d.mme.toLocaleString('fr-FR')+'€', y:20, fs:9, fw:700, fill:'#53d769'},
+      {t:'+'+d.caf.toLocaleString('fr-FR')+'€', y:32, fs:9, fw:700, fill:'#53d769'},
+    ];
+    texts.forEach(t => {
+      const el = document.createElementNS(SVG_NS, 'text');
+      el.setAttribute('x', CX);
+      el.setAttribute('y', CY + t.y);
+      el.setAttribute('text-anchor', 'middle');
+      el.setAttribute('font-size', t.fs);
+      el.setAttribute('font-weight', t.fw);
+      el.setAttribute('fill', t.fill);
+      if (t.y < 0) el.setAttribute('dominant-baseline', 'auto');
+      else el.setAttribute('dominant-baseline', 'hanging');
+      el.textContent = t.t;
+      ccfLayer.appendChild(el);
+    });
+
+    // Charges fixes
+    const chargesY = CY + 48;
+    const chargesLine = document.createElementNS(SVG_NS, 'text');
+    chargesLine.setAttribute('x', CX); chargesLine.setAttribute('y', chargesY);
+    chargesLine.setAttribute('text-anchor', 'middle');
+    chargesLine.setAttribute('font-size', '8');
+    chargesLine.setAttribute('fill', '#ff6b81');
+    chargesLine.setAttribute('font-weight', '600');
+    chargesLine.setAttribute('dominant-baseline', 'hanging');
+    chargesLine.textContent = '🔒 −'+d.charges.toLocaleString('fr-FR')+'€ charges';
+    ccfLayer.appendChild(chargesLine);
+
+    // Reste à dispatcher
+    const resteY = chargesY + 16;
+    const resteText = document.createElementNS(SVG_NS, 'text');
+    resteText.setAttribute('x', CX); resteText.setAttribute('y', resteY);
+    resteText.setAttribute('text-anchor', 'middle');
+    resteText.setAttribute('font-size', '11');
+    resteText.setAttribute('fill', '#54a0ff');
+    resteText.setAttribute('font-weight', '800');
+    resteText.setAttribute('dominant-baseline', 'hanging');
+    resteText.textContent = '↘ '+resteDispatch.toLocaleString('fr-FR')+'€ à dispatcher';
+    ccfLayer.appendChild(resteText);
+
+    // ARROWS + LABELS
+    const arrowLayer = document.getElementById('arrows-layer');
+    const labelLayer = document.getElementById('labels-layer');
+    arrowLayer.innerHTML = '';
+    labelLayer.innerHTML = '';
+
+    bubbles.forEach(b => {
+      if (b.v <= 0 && b.id !== 'epargne') return;
+      if (b.id === 'epargne' && epargne <= 0) return;
+
+      // Diriger la flèche vers le bord de la bulle cible
+      const dx = b.x - CX, dy = b.y - CY;
+      const angle = Math.atan2(dy, dx);
+      const startR = 58;
+      const endR = b.r + 6;
+      const x1 = CX + Math.cos(angle) * startR;
+      const y1 = CY + Math.sin(angle) * startR;
+      const x2 = b.x - Math.cos(angle) * endR;
+      const y2 = b.y - Math.sin(angle) * endR;
+
+      // Flèche courbe? Non, droite pour lisibilité
+      const line = document.createElementNS(SVG_NS, 'line');
+      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+      line.setAttribute('class', 'flow-arrow');
+      line.setAttribute('stroke', b.color);
+      line.setAttribute('opacity', '0.5');
+      arrowLayer.appendChild(line);
+
+      // Label montant au milieu de la flèche
+      const mx = (x1 + x2) / 2;
+      const my = (y1 + y2) / 2 - 8;
+      const lbl = document.createElementNS(SVG_NS, 'text');
+      lbl.setAttribute('x', mx); lbl.setAttribute('y', my);
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('font-size', '9');
+      lbl.setAttribute('fill', b.color);
+      lbl.setAttribute('font-weight', '800');
+      lbl.setAttribute('opacity', '0.85');
+      lbl.textContent = b.v.toLocaleString('fr-FR')+'€';
+      labelLayer.appendChild(lbl);
+    });
+
+    // BUBBLES
+    const bubbleLayer = document.getElementById('bubbles-layer');
+    bubbleLayer.innerHTML = '';
+
+    bubbles.forEach(b => {
+      if (b.v <= 0 && b.id !== 'epargne') return;
+      if (b.id === 'epargne' && epargne <= 0) {
+        // Afficher quand même avec "0€"
+      }
+
+      const g = document.createElementNS(SVG_NS, 'g');
+      g.setAttribute('class', 'bubble');
+      g.setAttribute('data-id', b.id);
+
+      const gradId = b.id === 'epargne' ? 'url(#epargneGrad)' : b.color;
+
+      // Cercle avec ombre
+      const circle = document.createElementNS(SVG_NS, 'circle');
+      circle.setAttribute('cx', b.x); circle.setAttribute('cy', b.y);
+      circle.setAttribute('r', b.r);
+      circle.setAttribute('fill', b.id === 'epargne' ? 'url(#epargneGrad)' : b.color);
+      circle.setAttribute('stroke', b.color);
+      circle.setAttribute('stroke-width', '2');
+      circle.setAttribute('filter', 'url(#glow)');
+      circle.setAttribute('opacity', '0.9');
+      g.appendChild(circle);
+
+      // Nom en haut de la bulle
+      const name = document.createElementNS(SVG_NS, 'text');
+      name.setAttribute('x', b.x);
+      name.setAttribute('y', b.y - 2);
+      name.setAttribute('text-anchor', 'middle');
+      name.setAttribute('font-size', b.id === 'epargne' || b.id === 'vie' ? '8' : '8');
+      name.setAttribute('font-weight', '700');
+      name.setAttribute('fill', '#fff');
+      name.setAttribute('dominant-baseline', 'auto');
+      name.textContent = b.label;
+      g.appendChild(name);
+
+      // Montant
+      const amt = document.createElementNS(SVG_NS, 'text');
+      amt.setAttribute('x', b.x);
+      amt.setAttribute('y', b.y + 4);
+      amt.setAttribute('text-anchor', 'middle');
+      amt.setAttribute('font-size', b.v >= 1000 ? '12' : b.v >= 100 ? '11' : '10');
+      amt.setAttribute('font-weight', '800');
+      amt.setAttribute('fill', '#fff');
+      amt.setAttribute('dominant-baseline', 'hanging');
+      amt.textContent = b.v.toLocaleString('fr-FR')+'€';
+      g.appendChild(amt);
+
+      // Description
+      const desc = document.createElementNS(SVG_NS, 'text');
+      desc.setAttribute('x', b.x);
+      desc.setAttribute('y', b.y + b.r - 6);
+      desc.setAttribute('text-anchor', 'middle');
+      desc.setAttribute('font-size', '6.5');
+      desc.setAttribute('fill', 'rgba(255,255,255,0.4)');
+      desc.setAttribute('dominant-baseline', 'hanging');
+      desc.textContent = b.desc;
+      g.appendChild(desc);
+
+      bubbleLayer.appendChild(g);
+    });
   }
 
-  // Charger les données sauvegardées au démarrage
-  const saved = loadFromStorage();
-  if (saved) {
-    // Appliquer aux inputs
-    document.getElementById('edit-mr').value = saved.salaireMr;
-    document.getElementById('edit-mme').value = saved.salaireMme;
-    document.getElementById('edit-caf').value = saved.caf;
-    document.getElementById('edit-charges').value = saved.chargesFixes;
-    document.getElementById('edit-hayette').value = saved.hayette;
-    document.getElementById('edit-rachid').value = saved.rachid;
-    document.getElementById('edit-viecourante').value = saved.viecourante;
-    document.getElementById('edit-amine').value = saved.amine;
-    document.getElementById('edit-mayssa').value = saved.mayssa;
-    document.getElementById('edit-assiya').value = saved.assiya;
-    update(saved);
-  } else {
-    // Valeurs par défaut
-    update(getData());
+  // UI
+  function applyData(d) {
+    document.getElementById('e-mr').value = d.mr;
+    document.getElementById('e-mme').value = d.mme;
+    document.getElementById('e-caf').value = d.caf;
+    document.getElementById('e-charges').value = d.charges;
+    document.getElementById('e-hayette').value = d.hayette;
+    document.getElementById('e-rachid').value = d.rachid;
+    document.getElementById('e-viecourante').value = d.vie;
+    document.getElementById('e-amine').value = d.amine;
+    document.getElementById('e-mayssa').value = d.mayssa;
+    document.getElementById('e-assiya').value = d.assiya;
   }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg || '✅ Mis à jour !';
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 2000);
+  }
+
+  // INIT
+  const saved = loadData();
+  if (saved) {
+    applyData(saved);
+    render(saved);
+  } else {
+    render(getData());
+  }
+
+  // Live preview on input change
+  document.querySelectorAll('.edit-panel input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const d = getData();
+      render(d);
+    });
+  });
 
   // Toggle panel
   document.getElementById('edit-toggle').addEventListener('click', function() {
     const panel = document.getElementById('edit-panel');
     panel.classList.toggle('open');
-    this.textContent = panel.classList.contains('open')
-      ? '✏️ Modifier les montants'
-      : '✏️ Modifier les montants';
-
-    // Recharger les inputs depuis les valeurs sauvegardées si on ouvre
     if (!panel.classList.contains('open')) {
-      // À la fermeture, on remet les inputs aux valeurs actuelles
-      const data = getData();
-      const current = loadFromStorage() || data;
-      document.getElementById('edit-mr').value = current.salaireMr;
-      document.getElementById('edit-mme').value = current.salaireMme;
-      document.getElementById('edit-caf').value = current.caf;
-      document.getElementById('edit-charges').value = current.chargesFixes;
-      document.getElementById('edit-hayette').value = current.hayette;
-      document.getElementById('edit-rachid').value = current.rachid;
-      document.getElementById('edit-viecourante').value = current.viecourante;
-      document.getElementById('edit-amine').value = current.amine;
-      document.getElementById('edit-mayssa').value = current.mayssa;
-      document.getElementById('edit-assiya').value = current.assiya;
+      // On ferme, recharger les valeurs depuis les inputs
     }
   });
 
   // Save
   document.getElementById('edit-save').addEventListener('click', function() {
-    const data = getData();
-    saveToStorage(data);
-    update(data);
+    const d = getData();
+    saveData(d);
+    render(d);
     document.getElementById('edit-panel').classList.remove('open');
-    document.getElementById('edit-toggle').textContent = '✏️ Modifier les montants';
-    showToast('✅ Montants mis à jour !');
+    showToast('✅ Montants sauvegardés !');
   });
-
-  // Auto-update preview à la saisie
-  document.querySelectorAll('.edit-panel input').forEach(input => {
-    input.addEventListener('input', function() {
-      const data = getData();
-      update(data);
-    });
-  });
-
 })();
 </script>
 </body>

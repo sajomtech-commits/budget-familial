@@ -173,9 +173,9 @@
     <text x="215" y="144" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
     <text x="215" y="157" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-    <text x="215" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r1">+2 500€</text>
-    <text x="215" y="190" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r2">+1 800€</text>
-    <text x="215" y="202" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r3">+860€</text>
+    <text x="215" y="178" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
+    <text x="215" y="190" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
+    <text x="215" y="202" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r3">CAF +860€</text>
 
     <text x="215" y="224" text-anchor="middle" font-size="7.5" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 -1 100€</text>
     <text x="215" y="235" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ 4 060€</text>
@@ -263,9 +263,9 @@
     var vals = {hayatte:d.hayette, rachid:d.rachid, vie:d.vie, amine:d.amine, mayssa:d.mayssa, assiya:d.assiya, epargne:epargne};
 
     // Mise à jour CCF
-    document.getElementById('r1').textContent = '+'+fmt(d.mr);
-    document.getElementById('r2').textContent = '+'+fmt(d.mme);
-    document.getElementById('r3').textContent = '+'+fmt(d.caf);
+    document.getElementById('r1').textContent = 'Salaire Rachid +'+fmt(d.mr);
+    document.getElementById('r2').textContent = 'Salaire Hayette +'+fmt(d.mme);
+    document.getElementById('r3').textContent = 'CAF +'+fmt(d.caf);
     document.getElementById('r4').textContent = '🔒 -'+fmt(d.charges);
     document.getElementById('r5').textContent = '↘ '+fmt(reste);
 

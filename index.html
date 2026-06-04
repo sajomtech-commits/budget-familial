@@ -163,6 +163,21 @@
         <stop offset="0%" stop-color="#1a7a72"/>
         <stop offset="100%" stop-color="#0f4a44"/>
       </radialGradient>
+      <radialGradient id="vg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#6be87f"/>
+        <stop offset="100%" stop-color="#2d8a38"/>
+      </radialGradient>
+      <radialGradient id="ag" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ffbe4d"/>
+        <stop offset="100%" stop-color="#cc7a00"/>
+      </radialGradient>
+      <radialGradient id="mg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#c4b5fd"/>
+        <stop offset="100%" stop-color="#7c3aed"/>
+      </radialGradient>
+      <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+      </filter>
     </defs>
 
     <!-- GLOW CCF -->
@@ -221,13 +236,13 @@
   // Comptes: [id, label, color, angle°, distance, rayon]
   // Angles: 0=droite, 90=bas, 180=gauche, 270=haut
   var CFG = [
-    ['hayette',  'Bourso Hayette','#fd79a8', 200, 140, 30],
-    ['rachid',   'Bourso Rachid', '#54a0ff', 155, 145, 28],
-    ['vie',      'Bourso joint\nVie courante','#53d769', 270, 150, 44],
-    ['amine',    'Bourso Amine',  '#ffa502', 50,  135, 24],
-    ['mayssa',   'Bourso Mayssa', '#a29bfe', 10,  140, 24],
-    ['assiya',   'Bourso Assiya', '#fd79a8', 330, 140, 24],
-    ['epargne',  'Bourso joint\nÉpargne', '#0fb9b1', 95,  160, 38],
+    ['hayette',  'Bourso Hayette','#fd79a8', '#fd79a8', 200, 140, 30],
+    ['rachid',   'Bourso Rachid', '#54a0ff', '#54a0ff', 155, 145, 28],
+    ['vie',      'Bourso joint\nVie courante','url(#vg)', '#2d8a38', 90, 150, 46],
+    ['amine',    'Bourso Amine',  'url(#ag)', '#cc7a00', 50,  135, 24],
+    ['mayssa',   'Bourso Mayssa', 'url(#mg)', '#7c3aed', 10,  140, 24],
+    ['assiya',   'Bourso Assiya', '#fd79a8', '#fd79a8', 330, 140, 24],
+    ['epargne',  'Bourso joint\nÉpargne', 'url(#eg)', '#0fb9b1', 95,  160, 38],
   ];
 
   function deg(d) { return d * Math.PI / 180; }
@@ -274,7 +289,7 @@
     document.getElementById('bubbles').innerHTML = '';
 
     CFG.forEach(function(c) {
-      var id = c[0], label = c[1], color = c[2], angle = c[3], dist = c[4], baseR = c[5];
+      var id = c[0], label = c[1], fill = c[2], strokeColor = c[3], angle = c[4], dist = c[5], baseR = c[6];
       var v = 0;
       if (id === 'epargne') v = epargne;
       else if (id === 'hayatte') v = d.hayette;
@@ -283,7 +298,7 @@
 
       var rad = deg(angle);
       var x = CX + Math.cos(rad) * dist;
-      var y = CY + Math.sin(rad) * dist;
+      var y = CY - Math.sin(rad) * dist;
 
       // Rayon adaptatif
       var r = baseR;
@@ -293,7 +308,7 @@
       }
 
       // --- FLÈCHE ---
-      var ar = Math.atan2(y - CY, x - CX);
+      var ar = Math.atan2(CY - y, x - CX);
       var x1 = CX + Math.cos(ar) * 74;
       var y1 = CY + Math.sin(ar) * 74;
       var x2 = x - Math.cos(ar) * (r + 4);
@@ -302,7 +317,7 @@
       var line = document.createElementNS(NS, 'line');
       line.setAttribute('x1', x1); line.setAttribute('y1', y1);
       line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-      line.setAttribute('stroke', color);
+      line.setAttribute('stroke', strokeColor);
       line.setAttribute('stroke-width', '1.5');
       line.setAttribute('opacity', '0.35');
       document.getElementById('arrows').appendChild(line);
@@ -315,13 +330,12 @@
       lbl.setAttribute('text-anchor', 'middle');
       lbl.setAttribute('font-size', '8');
       lbl.setAttribute('font-weight', '800');
-      lbl.setAttribute('fill', color);
+      lbl.setAttribute('fill', strokeColor);
       lbl.setAttribute('opacity', '0.85');
       lbl.textContent = v.toLocaleString('fr-FR') + '€';
       document.getElementById('arrows').appendChild(lbl);
 
       // --- BULLE ---
-      var fill = (id === 'epargne') ? 'url(#eg)' : color;
 
       var g = document.createElementNS(NS, 'g');
 
@@ -329,8 +343,9 @@
       circ.setAttribute('cx', x); circ.setAttribute('cy', y);
       circ.setAttribute('r', r);
       circ.setAttribute('fill', fill);
-      circ.setAttribute('stroke', color);
+      circ.setAttribute('stroke', strokeColor);
       circ.setAttribute('stroke-width', '2');
+      circ.setAttribute('filter', 'url(#shadow)');
       circ.setAttribute('opacity', '0.92');
       g.appendChild(circ);
 

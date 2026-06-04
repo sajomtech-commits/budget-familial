@@ -93,9 +93,17 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 
 <script>
 (function(){
-var NS='http://www.w3.org/2000/svg', CX=215, CY=190;
+var NS='http://www.w3.org/2000/svg', CX=215, CY=190, VER=16;
 
-try{localStorage.removeItem('bf');localStorage.removeItem('bf-data');}catch(e){}
+// Cache buster: si la version stockée est différente, on reset tout et on reload
+try{
+var v=localStorage.getItem('bf-ver');
+if(v!==VER.toString()){
+localStorage.clear();
+localStorage.setItem('bf-ver',VER.toString());
+document.location.reload(true);
+}
+}catch(e){}
 
 // [id, label, fill, stroke, angle°, dist, r]
 var C = [

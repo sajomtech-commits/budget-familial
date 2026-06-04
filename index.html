@@ -5,415 +5,209 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Budget Familial — CCF</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0d0d1f;
-    --card: #16163a;
-    --text: #e8e8f0;
-    --muted: #6a6a8a;
-    --blue: #54a0ff;
-    --green: #53d769;
-    --orange: #ffa502;
-    --purple: #a29bfe;
-    --pink: #fd79a8;
-    --red: #ff6b81;
-    --teal: #0fb9b1;
-  }
-  html, body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    width: 100%;
-    overflow-x: hidden;
-  }
-  .wrap { max-width: 500px; margin: 0 auto; padding: 10px 8px 28px; }
-
-  h1 {
-    font-size: 1.1rem;
-    text-align: center;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 700;
-  }
-  .sub {
-    text-align: center;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 2px;
-    margin-bottom: 2px;
-  }
-
-  svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .ctrl {
-    display: block;
-    width: 100%;
-    padding: 13px;
-    background: var(--card);
-    border: 1px dashed rgba(255,255,255,0.12);
-    border-radius: 14px;
-    color: var(--muted);
-    font-size: 0.85rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all .2s;
-    margin-top: 6px;
-  }
-  .ctrl:hover { border-color: var(--blue); color: var(--blue); }
-
-  .panel {
-    display: none;
-    background: var(--card);
-    border-radius: 18px;
-    padding: 16px;
-    margin-top: 6px;
-    animation: slide .3s ease;
-  }
-  .panel.open { display: block; }
-  @keyframes slide {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .panel h3 {
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
-    margin-top: 12px;
-  }
-  .panel h3:first-child { margin-top: 0; }
-  .grp { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
-  .grp label { display: block; font-size: 0.6rem; color: var(--muted); margin-bottom: 2px; }
-  .grp input {
-    width: 100%;
-    padding: 9px 10px;
-    background: var(--bg);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 0.85rem;
-    outline: none;
-  }
-  .grp input:focus { border-color: var(--blue); }
-
-  .save {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--blue), var(--purple));
-    border: none;
-    border-radius: 14px;
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 6px;
-  }
-  .save:active { opacity: .8; }
-
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--green);
-    color: #000;
-    padding: 10px 24px;
-    border-radius: 30px;
-    font-size: .8rem;
-    font-weight: 700;
-    display: none;
-    z-index: 100;
-    animation: fadeIn .3s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-  }
-
-  footer {
-    text-align: center;
-    font-size: .55rem;
-    color: var(--muted);
-    opacity: .4;
-    padding-top: 8px;
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d1f;--card:#16163a;--text:#e8e8f0;--muted:#6a6a8a;--blue:#54a0ff}
+html,body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;width:100%;overflow-x:hidden}
+.wrap{max-width:500px;margin:0 auto;padding:10px 8px 28px}
+h1{font-size:1.1rem;text-align:center;background:linear-gradient(90deg,var(--blue),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.sub{text-align:center;font-size:.6rem;color:var(--muted);letter-spacing:2px;margin-bottom:2px}
+svg{display:block;width:100%;height:auto;max-width:500px;margin:0 auto}
+.ctrl{display:block;width:100%;padding:13px;background:var(--card);border:1px dashed rgba(255,255,255,.12);border-radius:14px;color:var(--muted);font-size:.85rem;text-align:center;cursor:pointer;transition:all .2s;margin-top:6px}
+.ctrl:hover{border-color:var(--blue);color:var(--blue)}
+.panel{display:none;background:var(--card);border-radius:18px;padding:16px;margin-top:6px;animation:slide .3s ease}
+.panel.open{display:block}
+@keyframes slide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.panel h3{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;margin-top:12px}
+.panel h3:first-child{margin-top:0}
+.grp{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.grp label{display:block;font-size:.6rem;color:var(--muted);margin-bottom:2px}
+.grp input{width:100%;padding:9px 10px;background:var(--bg);border:1px solid rgba(255,255,255,.07);border-radius:10px;color:var(--text);font-size:.85rem;outline:none}
+.grp input:focus{border-color:var(--blue)}
+.save{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),#a29bfe);border:none;border-radius:14px;color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px}
+.save:active{opacity:.8}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#53d769;color:#000;padding:10px 24px;border-radius:30px;font-size:.8rem;font-weight:700;display:none;z-index:100;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-top:8px}
 </style>
 </head>
 <body>
-
 <div class="wrap">
-  <h1>💰 Budget Familial</h1>
-  <p class="sub">CCF · CENTRE NERVEUX</p>
+<h1>💰 Budget Familial</h1>
+<p class="sub">CCF · CENTRE NERVEUX</p>
 
-  <svg viewBox="-10 -20 480 540" id="d">
-    <defs>
-      <radialGradient id="cg" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#2a3a7a"/>
-        <stop offset="100%" stop-color="#14184a"/>
-      </radialGradient>
-      <radialGradient id="eg" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#1a7a72"/>
-        <stop offset="100%" stop-color="#0f4a44"/>
-      </radialGradient>
-      <radialGradient id="vg" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#6be87f"/>
-        <stop offset="100%" stop-color="#2d8a38"/>
-      </radialGradient>
-      <radialGradient id="ag" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ffbe4d"/>
-        <stop offset="100%" stop-color="#cc7a00"/>
-      </radialGradient>
-      <radialGradient id="mg" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#c4b5fd"/>
-        <stop offset="100%" stop-color="#7c3aed"/>
-      </radialGradient>
-      <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
-      </filter>
-    </defs>
+<svg viewBox="0 0 440 470" id="d">
+<defs>
+<radialGradient id="cg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2a3a7a"/><stop offset="100%" stop-color="#14184a"/></radialGradient>
+<radialGradient id="eg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a7a72"/><stop offset="100%" stop-color="#0f4a44"/></radialGradient>
+<radialGradient id="vg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6be87f"/><stop offset="100%" stop-color="#2d8a38"/></radialGradient>
+<radialGradient id="ag" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffbe4d"/><stop offset="100%" stop-color="#cc7a00"/></radialGradient>
+<radialGradient id="mg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/></radialGradient>
+<filter id="sh" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity=".4"/></filter>
+</defs>
 
-    <!-- GLOW CCF -->
-    <circle cx="215" cy="185" r="82" fill="none" stroke="#54a0ff" stroke-width="1" opacity="0.12"/>
-    <!-- CCF -->
-    <circle cx="215" cy="185" r="70" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
+<!-- CCF -->
+<circle cx="215" cy="190" r="72" fill="none" stroke="#54a0ff" stroke-width="1" opacity=".1"/>
+<circle cx="215" cy="190" r="60" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
 
-    <text x="215" y="144" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
-    <text x="215" y="157" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
+<text x="215" y="150" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
+<text x="215" y="163" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-    <text x="215" y="178" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
-    <text x="215" y="190" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
-    <text x="215" y="202" text-anchor="middle" font-size="8" fill="#53d769" dominant-baseline="hanging" id="r3">CAF +860€</text>
+<text x="215" y="184" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
+<text x="215" y="196" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
+<text x="215" y="208" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r3">CAF +860€</text>
 
-    <text x="215" y="224" text-anchor="middle" font-size="7.5" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
-    <text x="215" y="235" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
+<text x="215" y="228" text-anchor="middle" font-size="7" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
+<text x="215" y="239" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
 
-    <g id="arrows"></g>
-    <g id="bubbles"></g>
-  </svg>
+<g id="arrows"></g>
+<g id="bubbles"></g>
+</svg>
 
-  <button class="ctrl" id="editBtn">✏️ Modifier les montants</button>
-
-  <div class="panel" id="panel">
-    <h3>Revenus</h3>
-    <div class="grp">
-      <div><label>Salaire Mr (€)</label><input type="number" id="i-mr" value="2500"></div>
-      <div><label>Salaire Mme (€)</label><input type="number" id="i-mme" value="1800"></div>
-      <div><label>CAF (€)</label><input type="number" id="i-caf" value="860"></div>
-      <div><label>Charges fixes (€)</label><input type="number" id="i-charges" value="1100"></div>
-    </div>
-    <h3>Dispatch</h3>
-    <div class="grp">
-      <div><label>Hayette (€)</label><input type="number" id="i-hayette" value="260"></div>
-      <div><label>Rachid (€)</label><input type="number" id="i-rachid" value="100"></div>
-      <div><label>Vie Courante (€)</label><input type="number" id="i-vie" value="2000"></div>
-      <div><label>Amine (€)</label><input type="number" id="i-amine" value="35"></div>
-      <div><label>Mayssa (€)</label><input type="number" id="i-mayssa" value="35"></div>
-      <div><label>Assiya (€)</label><input type="number" id="i-assiya" value="35"></div>
-    </div>
-    <p style="font-size:0.6rem;color:var(--muted);margin-top:2px;">⚠️ Les montants se mettent à jour en direct</p>
-    <p style="font-size:0.6rem;color:var(--muted);">Le reste va automatiquement sur Épargne</p>
-    <button class="save" id="saveBtn">💾 Enregistrer</button>
-  </div>
-
-  <footer>Budget Familial</footer>
+<button class="ctrl" id="editBtn">✏️ Modifier les montants</button>
+<div class="panel" id="panel">
+<h3>Revenus</h3>
+<div class="grp">
+<div><label>Salaire Mr (€)</label><input type="number" id="i-mr" value="2500"></div>
+<div><label>Salaire Mme (€)</label><input type="number" id="i-mme" value="1800"></div>
+<div><label>CAF (€)</label><input type="number" id="i-caf" value="860"></div>
+<div><label>Charges fixes (€)</label><input type="number" id="i-charges" value="1100"></div>
 </div>
-
-<div class="toast" id="toast">✅ Montants sauvegardés</div>
+<h3>Dispatch</h3>
+<div class="grp">
+<div><label>Hayette (€)</label><input type="number" id="i-hayette" value="260"></div>
+<div><label>Rachid (€)</label><input type="number" id="i-rachid" value="100"></div>
+<div><label>Vie Courante (€)</label><input type="number" id="i-vie" value="2000"></div>
+<div><label>Amine (€)</label><input type="number" id="i-amine" value="35"></div>
+<div><label>Mayssa (€)</label><input type="number" id="i-mayssa" value="35"></div>
+<div><label>Assiya (€)</label><input type="number" id="i-assiya" value="35"></div>
+</div>
+<button class="save" id="saveBtn">💾 Enregistrer</button>
+</div>
+<footer>Budget Familial</footer>
+</div>
+<div class="toast" id="toast">✅ Sauvegardé</div>
 
 <script>
-(function() {
-  var NS = 'http://www.w3.org/2000/svg';
-  var CX = 215, CY = 185;
+(function(){
+var NS='http://www.w3.org/2000/svg', CX=215, CY=190;
 
-  // Comptes: [id, label, color, angle°, distance, rayon]
-  // Angles: 0=droite, 90=bas, 180=gauche, 270=haut
-  var CFG = [
-    ['hayette',  'Bourso Hayette','#fd79a8', '#fd79a8', 200, 140, 30],
-    ['rachid',   'Bourso Rachid', '#54a0ff', '#54a0ff', 155, 145, 28],
-    ['vie',      'Bourso joint\nVie courante','url(#vg)', '#2d8a38', 270, 150, 46],
-    ['amine',    'Bourso Amine',  'url(#ag)', '#cc7a00', 50,  135, 24],
-    ['mayssa',   'Bourso Mayssa', 'url(#mg)', '#7c3aed', 10,  140, 24],
-    ['assiya',   'Bourso Assiya', '#fd79a8', '#fd79a8', 330, 140, 24],
-    ['epargne',  'Bourso joint\nÉpargne', 'url(#eg)', '#0fb9b1', 95,  160, 38],
-  ];
+// [id, label, fill, stroke, angle°, dist, r]
+// ANGLE: 0=droite, 90=bas, 180=gauche, 270=haut (coordonnées SVG)
+// Avec sin/cos standards + y = CY + sin(rad)*dist
+// 0°: cos=1, sin=0 → droite
+// 90°: cos=0, sin=1 → BAS
+// 180°: cos=-1, sin=0 → gauche
+// 270°: cos=0, sin=-1 → HAUT
+var C = [
+['hayette','Bourso Hayette','#fd79a8','#fd79a8',200,145,30],
+['rachid','Bourso Rachid','#54a0ff','#54a0ff',155,145,28],
+['vie','Bourso joint\nVie courante','url(#vg)','#2d8a38',90,155,46],
+['amine','Bourso Amine','url(#ag)','#cc7a00',50,135,24],
+['mayssa','Bourso Mayssa','url(#mg)','#7c3aed',10,140,24],
+['assiya','Bourso Assiya','#fd79a8','#fd79a8',330,140,24],
+['epargne','Bourso joint\nÉpargne','url(#eg)','#0fb9b1',95,165,38],
+];
 
-  function deg(d) { return d * Math.PI / 180; }
+function g(id){return parseInt(document.getElementById('i-'+id).value)||0}
+function getData(){return{mr:g('mr'),mme:g('mme'),caf:g('caf'),charges:g('charges'),hayette:g('hayette'),rachid:g('rachid'),vie:g('vie'),amine:g('amine'),mayssa:g('mayssa'),assiya:g('assiya')}}
+function save(d){try{localStorage.setItem('bf',JSON.stringify(d))}catch(e){}}
+function load(){try{var r=localStorage.getItem('bf');if(r)return JSON.parse(r)}catch(e){}return null}
+function fmt(n){return n.toLocaleString('fr-FR').replace(/\u202f/g,' ')+'€'}
 
-  function g(id) { return parseInt(document.getElementById('i-'+id).value) || 0; }
+function render(d){
+if(!d)d=getData()
+var rev=d.mr+d.mme+d.caf, reste=rev-d.charges
+var epargne=reste-(d.hayette+d.rachid+d.vie+d.amine+d.mayssa+d.assiya)
+if(epargne<0)epargne=0
 
-  function getData() {
-    return {
-      mr: g('mr'), mme: g('mme'), caf: g('caf'), charges: g('charges'),
-      hayette: g('hayette'), rachid: g('rachid'), vie: g('vie'),
-      amine: g('amine'), mayssa: g('mayssa'), assiya: g('assiya'),
-    };
-  }
+document.getElementById('r1').textContent='Salaire Rachid +'+fmt(d.mr)
+document.getElementById('r2').textContent='Salaire Hayette +'+fmt(d.mme)
+document.getElementById('r3').textContent='CAF +'+fmt(d.caf)
+document.getElementById('r4').textContent='🔒 Charges fixes -'+fmt(d.charges)
+document.getElementById('r5').textContent='↘ Reste '+fmt(reste)
 
-  function save(d) { try { localStorage.setItem('bf', JSON.stringify(d)); } catch(e) {} }
+document.getElementById('arrows').innerHTML=''
+document.getElementById('bubbles').innerHTML=''
 
-  function load() {
-    try { var r = localStorage.getItem('bf'); if (r) return JSON.parse(r); } catch(e) {}
-    return null;
-  }
+C.forEach(function(a){
+var id=a[0],label=a[1],fill=a[2],stroke=a[3],angle=a[4],dist=a[5],br=a[6]
+var v=0
+if(id==='epargne')v=epargne;else if(id==='hayatte')v=d.hayette;else v=d[id]
+if(v<0)v=0
 
-  function fmt(n) { return n.toLocaleString('fr-FR').replace(/\u202f/g, ' ') + '€'; }
+var rad=angle*Math.PI/180
+var x=CX+Math.cos(rad)*dist
+var y=CY+Math.sin(rad)*dist // sin(90°)=1 → y=CY+dist → en BAS
 
-  function render(d) {
-    if (!d) d = getData();
-    var rev = d.mr + d.mme + d.caf;
-    var reste = rev - d.charges;
+var r=br
+if(id==='epargne'){var ratio=Math.min(Math.max(epargne/400,.5),3);r=Math.round(26+ratio*12)}
 
-    var totalDisp = d.hayette + d.rachid + d.vie + d.amine + d.mayssa + d.assiya;
-    var epargne = reste - totalDisp;
-    if (epargne < 0) epargne = 0; // pas de négatif
+// Flèche
+var ar=Math.atan2(y-CY,x-CX)
+var x1=CX+Math.cos(ar)*65,y1=CY+Math.sin(ar)*65
+var x2=x-Math.cos(ar)*(r+4),y2=y-Math.sin(ar)*(r+4)
 
-    var vals = {hayatte:d.hayette, rachid:d.rachid, vie:d.vie, amine:d.amine, mayssa:d.mayssa, assiya:d.assiya, epargne:epargne};
+var ln=document.createElementNS(NS,'line')
+ln.setAttribute('x1',x1);ln.setAttribute('y1',y1);ln.setAttribute('x2',x2);ln.setAttribute('y2',y2)
+ln.setAttribute('stroke',stroke);ln.setAttribute('stroke-width','1.5');ln.setAttribute('opacity','.35')
+document.getElementById('arrows').appendChild(ln)
 
-    // Mise à jour CCF
-    document.getElementById('r1').textContent = 'Salaire Rachid +'+fmt(d.mr);
-    document.getElementById('r2').textContent = 'Salaire Hayette +'+fmt(d.mme);
-    document.getElementById('r3').textContent = 'CAF +'+fmt(d.caf);
-    document.getElementById('r4').textContent = '🔒 Charges fixes -'+fmt(d.charges);
-    document.getElementById('r5').textContent = '↘ Reste '+fmt(reste);
+var mx=(x1+x2)/2,my=(y1+y2)/2-6
+var lb=document.createElementNS(NS,'text')
+lb.setAttribute('x',mx);lb.setAttribute('y',my);lb.setAttribute('text-anchor','middle')
+lb.setAttribute('font-size','8');lb.setAttribute('font-weight','800');lb.setAttribute('fill',stroke)
+lb.setAttribute('opacity','.85')
+lb.textContent=v.toLocaleString('fr-FR')+'€'
+document.getElementById('arrows').appendChild(lb)
 
-    // Vider les anciennes flèches et bulles
-    document.getElementById('arrows').innerHTML = '';
-    document.getElementById('bubbles').innerHTML = '';
+// Bulle
+var g=document.createElementNS(NS,'g')
+var circ=document.createElementNS(NS,'circle')
+circ.setAttribute('cx',x);circ.setAttribute('cy',y);circ.setAttribute('r',r)
+circ.setAttribute('fill',fill);circ.setAttribute('stroke',stroke)
+circ.setAttribute('stroke-width','2');circ.setAttribute('filter','url(#sh)');circ.setAttribute('opacity','.92')
+g.appendChild(circ)
 
-    CFG.forEach(function(c) {
-      var id = c[0], label = c[1], fill = c[2], strokeColor = c[3], angle = c[4], dist = c[5], baseR = c[6];
-      var v = 0;
-      if (id === 'epargne') v = epargne;
-      else if (id === 'hayatte') v = d.hayette;
-      else v = d[id];
-      if (v < 0) v = 0;
+var lines=label.split('\n')
+lines.forEach(function(l,i){
+var t=document.createElementNS(NS,'text')
+t.setAttribute('x',x)
+t.setAttribute('y',y-(r>30?6-i*7:1-i*6))
+t.setAttribute('text-anchor','middle')
+t.setAttribute('font-size',r>30?'7':'6.5')
+t.setAttribute('font-weight','700')
+t.setAttribute('fill','#fff')
+t.setAttribute('dominant-baseline','auto')
+t.textContent=l
+g.appendChild(t)
+})
 
-      var rad = deg(angle);
-      var x = CX + Math.cos(rad) * dist;
-      var y = CY + Math.sin(rad) * dist;
+var amt=document.createElementNS(NS,'text')
+amt.setAttribute('x',x);amt.setAttribute('y',y+(r>30?5:3))
+amt.setAttribute('text-anchor','middle')
+var sz=v>=1000?'11':v>=100?'10':'9'
+amt.setAttribute('font-size',sz);amt.setAttribute('font-weight','800')
+amt.setAttribute('fill','#fff');amt.setAttribute('dominant-baseline','hanging')
+amt.textContent=v.toLocaleString('fr-FR')+'€'
+g.appendChild(amt)
 
-      // Rayon adaptatif
-      var r = baseR;
-      if (id === 'epargne') {
-        var ratio = Math.min(Math.max(epargne / 400, 0.5), 3);
-        r = Math.round(26 + ratio * 12);
-      }
+document.getElementById('bubbles').appendChild(g)
+})
+}
 
-      // --- FLÈCHE ---
-      var ar = Math.atan2(y - CY, x - CX);
-      var x1 = CX + Math.cos(ar) * 74;
-      var y1 = CY + Math.sin(ar) * 74;
-      var x2 = x - Math.cos(ar) * (r + 4);
-      var y2 = y - Math.sin(ar) * (r + 4);
+var saved=load()
+if(saved){
+Object.keys(saved).forEach(function(k){var el=document.getElementById('i-'+k);if(el)el.value=saved[k]})
+render(saved)
+}else render(getData())
 
-      var line = document.createElementNS(NS, 'line');
-      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-      line.setAttribute('stroke', strokeColor);
-      line.setAttribute('stroke-width', '1.5');
-      line.setAttribute('opacity', '0.35');
-      document.getElementById('arrows').appendChild(line);
-
-      // Label sur la flèche
-      var mx = (x1+x2)/2;
-      var my = (y1+y2)/2 - 6;
-      var lbl = document.createElementNS(NS, 'text');
-      lbl.setAttribute('x', mx); lbl.setAttribute('y', my);
-      lbl.setAttribute('text-anchor', 'middle');
-      lbl.setAttribute('font-size', '8');
-      lbl.setAttribute('font-weight', '800');
-      lbl.setAttribute('fill', strokeColor);
-      lbl.setAttribute('opacity', '0.85');
-      lbl.textContent = v.toLocaleString('fr-FR') + '€';
-      document.getElementById('arrows').appendChild(lbl);
-
-      // --- BULLE ---
-
-      var g = document.createElementNS(NS, 'g');
-
-      var circ = document.createElementNS(NS, 'circle');
-      circ.setAttribute('cx', x); circ.setAttribute('cy', y);
-      circ.setAttribute('r', r);
-      circ.setAttribute('fill', fill);
-      circ.setAttribute('stroke', strokeColor);
-      circ.setAttribute('stroke-width', '2');
-      circ.setAttribute('filter', 'url(#shadow)');
-      circ.setAttribute('opacity', '0.92');
-      g.appendChild(circ);
-
-      // Nom (gère les retours à la ligne avec \n)
-      var lines = label.split('\n');
-      lines.forEach(function(l, i) {
-        var name = document.createElementNS(NS, 'text');
-        name.setAttribute('x', x);
-        name.setAttribute('y', y - (r > 30 ? 6 - i*7 : 1 - i*6));
-        name.setAttribute('text-anchor', 'middle');
-        name.setAttribute('font-size', (r > 30) ? '7' : '6.5');
-        name.setAttribute('font-weight', '700');
-        name.setAttribute('fill', '#fff');
-        name.setAttribute('dominant-baseline', 'auto');
-        name.textContent = l;
-        g.appendChild(name);
-      });
-
-      // Montant
-      var amt = document.createElementNS(NS, 'text');
-      amt.setAttribute('x', x);
-      amt.setAttribute('y', y + (r > 30 ? 5 : 3));
-      amt.setAttribute('text-anchor', 'middle');
-      var sz = (v >= 1000) ? '11' : (v >= 100) ? '10' : '9';
-      amt.setAttribute('font-size', sz);
-      amt.setAttribute('font-weight', '800');
-      amt.setAttribute('fill', '#fff');
-      amt.setAttribute('dominant-baseline', 'hanging');
-      amt.textContent = v.toLocaleString('fr-FR') + '€';
-      g.appendChild(amt);
-
-      document.getElementById('bubbles').appendChild(g);
-    });
-  }
-
-  // --- INIT ---
-  var saved = load();
-  if (saved) {
-    Object.keys(saved).forEach(function(k) {
-      var el = document.getElementById('i-'+k);
-      if (el) el.value = saved[k];
-    });
-    render(saved);
-  } else {
-    render(getData());
-  }
-
-  // Live preview
-  document.querySelectorAll('.panel input').forEach(function(inp) {
-    inp.addEventListener('input', function() { render(getData()); });
-  });
-
-  // Toggle panel
-  document.getElementById('editBtn').addEventListener('click', function() {
-    document.getElementById('panel').classList.toggle('open');
-  });
-
-  // Save
-  document.getElementById('saveBtn').addEventListener('click', function() {
-    var d = getData();
-    save(d);
-    render(d);
-    document.getElementById('panel').classList.remove('open');
-    var t = document.getElementById('toast');
-    t.style.display = 'block';
-    setTimeout(function(){ t.style.display = 'none'; }, 2000);
-  });
-})();
+document.querySelectorAll('.panel input').forEach(function(i){i.addEventListener('input',function(){render(getData())})})
+document.getElementById('editBtn').addEventListener('click',function(){document.getElementById('panel').classList.toggle('open')})
+document.getElementById('saveBtn').addEventListener('click',function(){
+var d=getData();save(d);render(d);document.getElementById('panel').classList.remove('open')
+var t=document.getElementById('toast');t.style.display='block';setTimeout(function(){t.style.display='none'},2000)
+})
+})()
 </script>
 </body>
 </html>

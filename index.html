@@ -46,18 +46,22 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 </defs>
 
 <!-- CCF -->
-<circle cx="215" cy="190" r="82" fill="none" stroke="#54a0ff" stroke-width="1" opacity=".1"/>
-<circle cx="215" cy="190" r="68" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
+<circle cx="215" cy="190" r="90" fill="none" stroke="#54a0ff" stroke-width="1" opacity=".08"/>
+<circle cx="215" cy="190" r="75" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
 
-<text x="215" y="147" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
-<text x="215" y="160" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
+<text x="215" y="140" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
+<text x="215" y="153" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-<text x="215" y="182" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
-<text x="215" y="194" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
-<text x="215" y="206" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r3">CAF +860€</text>
+<!-- Total des revenus en gros -->
+<text x="215" y="178" text-anchor="middle" font-size="15" font-weight="900" fill="#ffffff" dominant-baseline="hanging" id="totalRev">5 160€</text>
+<text x="215" y="195" text-anchor="middle" font-size="6" fill="#6a6a8a" dominant-baseline="hanging">Total revenus</text>
 
-<text x="215" y="226" text-anchor="middle" font-size="7" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
-<text x="215" y="238" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
+<text x="215" y="212" text-anchor="middle" font-size="7" fill="#53d769" font-weight="600" dominant-baseline="hanging" id="r1">Rachid 2 500€</text>
+<text x="215" y="222" text-anchor="middle" font-size="7" fill="#53d769" font-weight="600" dominant-baseline="hanging" id="r2">Hayette 1 800€</text>
+<text x="215" y="232" text-anchor="middle" font-size="7" fill="#53d769" font-weight="600" dominant-baseline="hanging" id="r3">CAF 860€</text>
+
+<text x="215" y="250" text-anchor="middle" font-size="7" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 -1 100€ charges fixes</text>
+<text x="215" y="262" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
 
 <g id="arrows"></g>
 <g id="bubbles"></g>
@@ -91,28 +95,24 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 (function(){
 var NS='http://www.w3.org/2000/svg', CX=215, CY=190;
 
-// NETTOYAGE: on efface l'ancien localStorage buggé
 try{localStorage.removeItem('bf');localStorage.removeItem('bf-data');}catch(e){}
 
 // [id, label, fill, stroke, angle°, dist, r]
-// 0°=droite, 90°=BAS, 180°=gauche, 270°=haut
-// y = CY + sin(angle)*dist → sin(90°)=1 → y=190+dist → EN BAS
-// sin(270°)=-1 → y=190-dist → EN HAUT
 var C = [
-['hayette','Bourso Hayette','#fd79a8','#fd79a8',210,145,30],
-['rachid','Bourso Rachid','#54a0ff','#54a0ff',155,145,28],
-['vie','Bourso joint\nVie courante','url(#vg)','#2d8a38',130,165,46],
-['amine','Bourso Amine','url(#ag)','#cc7a00',270,145,24],
-['mayssa','Bourso Mayssa','url(#mg)','#7c3aed',300,145,24],
-['assiya','Bourso Assiya','#fd79a8','#fd79a8',335,145,24],
-['epargne','Bourso joint\nÉpargne','url(#eg)','#0fb9b1',45,175,38],
+['hayette','Bourso Hayette','#fd79a8','#fd79a8',210,150,34],
+['rachid','Bourso Rachid','#54a0ff','#54a0ff',155,150,32],
+['vie','Bourso joint\nVie courante','url(#vg)','#2d8a38',130,170,48],
+['amine','Bourso Amine','url(#ag)','#cc7a00',270,150,30],
+['mayssa','Bourso Mayssa','url(#mg)','#7c3aed',300,150,30],
+['assiya','Bourso Assiya','#fd79a8','#fd79a8',335,150,30],
+['epargne','Bourso joint\nÉpargne','url(#eg)','#0fb9b1',45,180,40],
 ];
 
 function g(id){return parseInt(document.getElementById('i-'+id).value)||0}
 function getData(){return{mr:g('mr'),mme:g('mme'),caf:g('caf'),charges:g('charges'),hayette:g('hayette'),rachid:g('rachid'),vie:g('vie'),amine:g('amine'),mayssa:g('mayssa'),assiya:g('assiya')}}
 function save(d){try{localStorage.setItem('bf2',JSON.stringify(d))}catch(e){}}
 function load(){try{var r=localStorage.getItem('bf2');if(r)return JSON.parse(r)}catch(e){localStorage.removeItem('bf2')}return null}
-function fmt(n){return n.toLocaleString('fr-FR').replace(/\u202f/g,' ')+'€'}
+function fmt(n){return n.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'}
 
 function render(d){
 if(!d)d=getData()
@@ -120,11 +120,12 @@ var rev=d.mr+d.mme+d.caf, reste=rev-d.charges
 var epargne=reste-(d.hayette+d.rachid+d.vie+d.amine+d.mayssa+d.assiya)
 if(epargne<0)epargne=0
 
-document.getElementById('r1').textContent='Salaire Rachid +'+fmt(d.mr)
-document.getElementById('r2').textContent='Salaire Hayette +'+fmt(d.mme)
-document.getElementById('r3').textContent='CAF +'+fmt(d.caf)
-document.getElementById('r4').textContent='🔒 Charges fixes -'+fmt(d.charges)
-document.getElementById('r5').textContent='↘ Reste '+fmt(reste)
+document.getElementById('totalRev').textContent=rev.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'
+document.getElementById('r1').textContent='Rachid '+d.mr.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'
+document.getElementById('r2').textContent='Hayette '+d.mme.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'
+document.getElementById('r3').textContent='CAF '+d.caf.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'
+document.getElementById('r4').textContent='🔒 -'+d.charges.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€ charges fixes'
+document.getElementById('r5').textContent='↘ Reste '+reste.toLocaleString('fr-FR').replace(/\u202f/g,'')+'€'
 
 document.getElementById('arrows').innerHTML=''
 document.getElementById('bubbles').innerHTML=''
@@ -137,14 +138,14 @@ if(v<0)v=0
 
 var rad=angle*Math.PI/180
 var x=CX+Math.cos(rad)*dist
-var y=CY+Math.sin(rad)*dist // 90°=BAS, 270°=HAUT
+var y=CY+Math.sin(rad)*dist
 
 var r=br
-if(id==='epargne'){var ratio=Math.min(Math.max(epargne/400,.5),3);r=Math.round(26+ratio*12)}
+if(id==='epargne'){var ratio=Math.min(Math.max(epargne/400,.5),3);r=Math.round(br+ratio*4)}
 
-// Flèche (part du bord du CCF vers la bulle)
+// Flèche
 var ar=Math.atan2(y-CY,x-CX)
-var x1=CX+Math.cos(ar)*70,y1=CY+Math.sin(ar)*70
+var x1=CX+Math.cos(ar)*78,y1=CY+Math.sin(ar)*78
 var x2=x-Math.cos(ar)*(r+5),y2=y-Math.sin(ar)*(r+5)
 
 var ln=document.createElementNS(NS,'line')
@@ -173,9 +174,9 @@ var lines=label.split('\n')
 lines.forEach(function(l,i){
 var t=document.createElementNS(NS,'text')
 t.setAttribute('x',x)
-t.setAttribute('y',y-(r>30?8-i*8:3-i*6))
+t.setAttribute('y',y-(r>35?10-i*9:5-i*7))
 t.setAttribute('text-anchor','middle')
-t.setAttribute('font-size',r>30?'7.5':'7')
+t.setAttribute('font-size',r>35?'8':'7.5')
 t.setAttribute('font-weight','700')
 t.setAttribute('fill','#fff')
 t.setAttribute('dominant-baseline','auto')
@@ -185,9 +186,9 @@ g.appendChild(t)
 
 // Montant
 var amt=document.createElementNS(NS,'text')
-amt.setAttribute('x',x);amt.setAttribute('y',y+(r>30?6:4))
+amt.setAttribute('x',x);amt.setAttribute('y',y+(r>35?8:5))
 amt.setAttribute('text-anchor','middle')
-var sz=v>=1000?'11':v>=100?'10':'9'
+var sz=v>=1000?'12':v>=100?'11':'10'
 amt.setAttribute('font-size',sz);amt.setAttribute('font-weight','800')
 amt.setAttribute('fill','#fff');amt.setAttribute('dominant-baseline','hanging')
 amt.textContent=v.toLocaleString('fr-FR')+'€'

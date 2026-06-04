@@ -35,7 +35,7 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 <h1>💰 Budget Familial</h1>
 <p class="sub">CCF · CENTRE NERVEUX</p>
 
-<svg viewBox="0 0 440 470" id="d">
+<svg viewBox="-20 -20 480 520" id="d">
 <defs>
 <radialGradient id="cg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2a3a7a"/><stop offset="100%" stop-color="#14184a"/></radialGradient>
 <radialGradient id="eg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1a7a72"/><stop offset="100%" stop-color="#0f4a44"/></radialGradient>
@@ -46,18 +46,18 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 </defs>
 
 <!-- CCF -->
-<circle cx="215" cy="190" r="72" fill="none" stroke="#54a0ff" stroke-width="1" opacity=".1"/>
-<circle cx="215" cy="190" r="60" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
+<circle cx="215" cy="190" r="82" fill="none" stroke="#54a0ff" stroke-width="1" opacity=".1"/>
+<circle cx="215" cy="190" r="68" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
 
-<text x="215" y="150" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
-<text x="215" y="163" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
+<text x="215" y="147" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
+<text x="215" y="160" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-<text x="215" y="184" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
-<text x="215" y="196" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
-<text x="215" y="208" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r3">CAF +860€</text>
+<text x="215" y="182" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r1">Salaire Rachid +2 500€</text>
+<text x="215" y="194" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r2">Salaire Hayette +1 800€</text>
+<text x="215" y="206" text-anchor="middle" font-size="8.5" fill="#53d769" font-weight="700" dominant-baseline="hanging" id="r3">CAF +860€</text>
 
-<text x="215" y="228" text-anchor="middle" font-size="7" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
-<text x="215" y="239" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
+<text x="215" y="226" text-anchor="middle" font-size="7" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 Charges fixes -1 100€</text>
+<text x="215" y="238" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ Reste 4 060€</text>
 
 <g id="arrows"></g>
 <g id="bubbles"></g>
@@ -67,8 +67,8 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 <div class="panel" id="panel">
 <h3>Revenus</h3>
 <div class="grp">
-<div><label>Salaire Mr (€)</label><input type="number" id="i-mr" value="2500"></div>
-<div><label>Salaire Mme (€)</label><input type="number" id="i-mme" value="1800"></div>
+<div><label>Salaire Rachid (€)</label><input type="number" id="i-mr" value="2500"></div>
+<div><label>Salaire Hayette (€)</label><input type="number" id="i-mme" value="1800"></div>
 <div><label>CAF (€)</label><input type="number" id="i-caf" value="860"></div>
 <div><label>Charges fixes (€)</label><input type="number" id="i-charges" value="1100"></div>
 </div>
@@ -91,27 +91,27 @@ footer{text-align:center;font-size:.55rem;color:var(--muted);opacity:.4;padding-
 (function(){
 var NS='http://www.w3.org/2000/svg', CX=215, CY=190;
 
+// NETTOYAGE: on efface l'ancien localStorage buggé
+try{localStorage.removeItem('bf');localStorage.removeItem('bf-data');}catch(e){}
+
 // [id, label, fill, stroke, angle°, dist, r]
-// ANGLE: 0=droite, 90=bas, 180=gauche, 270=haut (coordonnées SVG)
-// Avec sin/cos standards + y = CY + sin(rad)*dist
-// 0°: cos=1, sin=0 → droite
-// 90°: cos=0, sin=1 → BAS
-// 180°: cos=-1, sin=0 → gauche
-// 270°: cos=0, sin=-1 → HAUT
+// 0°=droite, 90°=BAS, 180°=gauche, 270°=haut
+// y = CY + sin(angle)*dist → sin(90°)=1 → y=190+dist → EN BAS
+// sin(270°)=-1 → y=190-dist → EN HAUT
 var C = [
 ['hayette','Bourso Hayette','#fd79a8','#fd79a8',200,145,30],
 ['rachid','Bourso Rachid','#54a0ff','#54a0ff',155,145,28],
-['vie','Bourso joint\nVie courante','url(#vg)','#2d8a38',90,155,46],
-['amine','Bourso Amine','url(#ag)','#cc7a00',50,135,24],
-['mayssa','Bourso Mayssa','url(#mg)','#7c3aed',10,140,24],
+['vie','Bourso joint\nVie courante','url(#vg)','#2d8a38',90,160,46],
+['amine','Bourso Amine','url(#ag)','#cc7a00',270,140,24],
+['mayssa','Bourso Mayssa','url(#mg)','#7c3aed',300,140,24],
 ['assiya','Bourso Assiya','#fd79a8','#fd79a8',330,140,24],
 ['epargne','Bourso joint\nÉpargne','url(#eg)','#0fb9b1',95,165,38],
 ];
 
 function g(id){return parseInt(document.getElementById('i-'+id).value)||0}
 function getData(){return{mr:g('mr'),mme:g('mme'),caf:g('caf'),charges:g('charges'),hayette:g('hayette'),rachid:g('rachid'),vie:g('vie'),amine:g('amine'),mayssa:g('mayssa'),assiya:g('assiya')}}
-function save(d){try{localStorage.setItem('bf',JSON.stringify(d))}catch(e){}}
-function load(){try{var r=localStorage.getItem('bf');if(r)return JSON.parse(r)}catch(e){}return null}
+function save(d){try{localStorage.setItem('bf2',JSON.stringify(d))}catch(e){}}
+function load(){try{var r=localStorage.getItem('bf2');if(r)return JSON.parse(r)}catch(e){localStorage.removeItem('bf2')}return null}
 function fmt(n){return n.toLocaleString('fr-FR').replace(/\u202f/g,' ')+'€'}
 
 function render(d){
@@ -137,15 +137,15 @@ if(v<0)v=0
 
 var rad=angle*Math.PI/180
 var x=CX+Math.cos(rad)*dist
-var y=CY+Math.sin(rad)*dist // sin(90°)=1 → y=CY+dist → en BAS
+var y=CY+Math.sin(rad)*dist // 90°=BAS, 270°=HAUT
 
 var r=br
 if(id==='epargne'){var ratio=Math.min(Math.max(epargne/400,.5),3);r=Math.round(26+ratio*12)}
 
-// Flèche
+// Flèche (part du bord du CCF vers la bulle)
 var ar=Math.atan2(y-CY,x-CX)
-var x1=CX+Math.cos(ar)*65,y1=CY+Math.sin(ar)*65
-var x2=x-Math.cos(ar)*(r+4),y2=y-Math.sin(ar)*(r+4)
+var x1=CX+Math.cos(ar)*70,y1=CY+Math.sin(ar)*70
+var x2=x-Math.cos(ar)*(r+5),y2=y-Math.sin(ar)*(r+5)
 
 var ln=document.createElementNS(NS,'line')
 ln.setAttribute('x1',x1);ln.setAttribute('y1',y1);ln.setAttribute('x2',x2);ln.setAttribute('y2',y2)
@@ -168,13 +168,14 @@ circ.setAttribute('fill',fill);circ.setAttribute('stroke',stroke)
 circ.setAttribute('stroke-width','2');circ.setAttribute('filter','url(#sh)');circ.setAttribute('opacity','.92')
 g.appendChild(circ)
 
+// Nom (multilignes)
 var lines=label.split('\n')
 lines.forEach(function(l,i){
 var t=document.createElementNS(NS,'text')
 t.setAttribute('x',x)
-t.setAttribute('y',y-(r>30?6-i*7:1-i*6))
+t.setAttribute('y',y-(r>30?8-i*8:3-i*6))
 t.setAttribute('text-anchor','middle')
-t.setAttribute('font-size',r>30?'7':'6.5')
+t.setAttribute('font-size',r>30?'7.5':'7')
 t.setAttribute('font-weight','700')
 t.setAttribute('fill','#fff')
 t.setAttribute('dominant-baseline','auto')
@@ -182,8 +183,9 @@ t.textContent=l
 g.appendChild(t)
 })
 
+// Montant
 var amt=document.createElementNS(NS,'text')
-amt.setAttribute('x',x);amt.setAttribute('y',y+(r>30?5:3))
+amt.setAttribute('x',x);amt.setAttribute('y',y+(r>30?6:4))
 amt.setAttribute('text-anchor','middle')
 var sz=v>=1000?'11':v>=100?'10':'9'
 amt.setAttribute('font-size',sz);amt.setAttribute('font-weight','800')
@@ -195,6 +197,7 @@ document.getElementById('bubbles').appendChild(g)
 })
 }
 
+// INIT
 var saved=load()
 if(saved){
 Object.keys(saved).forEach(function(k){var el=document.getElementById('i-'+k);if(el)el.value=saved[k]})

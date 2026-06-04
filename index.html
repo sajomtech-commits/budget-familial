@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Budget Familial</title>
+<style>
+  :root {
+    --ccf: #1a1a2e;
+    --bourso: #16213e;
+    --epargne: #0f3460;
+    --vert: #53d769;
+    --rouge: #ff4757;
+    --orange: #ffa502;
+    --bleu-clair: #54a0ff;
+    --violet: #a29bfe;
+    --rose: #fd79a8;
+    --fond: #0a0a1a;
+    --carte: #1e1e3a;
+    --texte: #e8e8f0;
+    --texte-muted: #8888aa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--fond);
+    color: var(--texte);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .container { max-width: 480px; margin: 0 auto; padding: 12px; }
+  h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    padding: 16px 0 8px;
+    background: linear-gradient(135deg, var(--bleu-clair), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--texte-muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  /* Carte CCF centrale */
+  .hub-card {
+    background: linear-gradient(135deg, #1a1a3e, #16213e);
+    border: 2px solid var(--bleu-clair);
+    border-radius: 20px;
+    padding: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(84,160,255,0.15);
+    position: relative;
+  }
+  .hub-card::before {
+    content: '🏦 CENTRE NERVEUX';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bleu-clair);
+    color: #000;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 14px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+  }
+  .hub-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: var(--bleu-clair);
+  }
+  .hub-title span { font-size: 0.65rem; color: var(--texte-muted); }
+  .flow-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.85rem;
+  }
+  .flow-row:last-child { border: none; }
+  .flow-row .label { color: var(--texte-muted); }
+  .flow-row .value { font-weight: 700; }
+  .flow-row .value.in { color: var(--vert); }
+  .hub-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid var(--bleu-clair);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .hub-total .total-label { color: var(--texte-muted); }
+  .hub-total .total-value { color: var(--bleu-clair); }
+
+  /* Connecteur */
+  .connector-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 4px 20px;
+    font-size: 0.7rem;
+    color: var(--texte-muted);
+  }
+  .connector-line .arrow { color: var(--orange); font-size: 0.9rem; }
+
+  /* Cartes des comptes */
+  .accounts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .account-card {
+    background: var(--carte);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+  }
+  .account-card:active { transform: scale(0.97); }
+  .account-card .emoji { font-size: 1.5rem; margin-right: 12px; }
+  .account-info { flex: 1; }
+  .account-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .account-desc {
+    font-size: 0.65rem;
+    color: var(--texte-muted);
+  }
+  .account-amount {
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .account-amount .currency { font-size: 0.7rem; color: var(--texte-muted); }
+
+  /* Couleurs par compte */
+  .card-hayette { border-left-color: var(--rose); }
+  .card-hayette .account-amount { color: var(--rose); }
+  .card-rachid { border-left-color: var(--bleu-clair); }
+  .card-rachid .account-amount { color: var(--bleu-clair); }
+  .card-viecourante { border-left-color: var(--vert); }
+  .card-viecourante .account-amount { color: var(--vert); }
+  .card-amine { border-left-color: var(--orange); }
+  .card-amine .account-amount { color: var(--orange); }
+  .card-mayssa { border-left-color: var(--violet); }
+  .card-mayssa .account-amount { color: var(--violet); }
+  .card-assiya { border-left-color: var(--rose); }
+  .card-assiya .account-amount { color: var(--rose); }
+  .card-epargne { border-left-color: #0fb9b1; }
+  .card-epargne .account-amount { color: #0fb9b1; }
+
+  /* Section édition */
+  .edit-toggle {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: var(--carte);
+    border: 1px dashed var(--texte-muted);
+    border-radius: 12px;
+    color: var(--texte-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+  }
+  .edit-toggle:hover { border-color: var(--bleu-clair); color: var(--bleu-clair); }
+
+  .edit-panel {
+    display: none;
+    background: var(--carte);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: slideDown 0.3s ease;
+  }
+  .edit-panel.open { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .edit-panel h3 {
+    font-size: 0.8rem;
+    color: var(--texte-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .edit-group {
+    margin-bottom: 10px;
+  }
+  .edit-group label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--texte-muted);
+    margin-bottom: 4px;
+  }
+  .edit-group input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--fond);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: var(--texte);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .edit-group input:focus { border-color: var(--bleu-clair); }
+
+  .edit-save {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--bleu-clair), var(--violet));
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .edit-save:active { opacity: 0.8; }
+
+  .summary-bar {
+    background: var(--carte);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 4px 0;
+  }
+  .summary-row .text { color: var(--texte-muted); }
+  .summary-row.remaining .value { color: var(--orange); font-weight: 700; }
+  .summary-row.balance .value { color: var(--vert); font-weight: 700; }
+
+  footer {
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--texte-muted);
+    padding: 20px 0 30px;
+    opacity: 0.5;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--vert);
+    color: #000;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(83,215,105,0.3);
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>💰 Budget Familial</h1>
+  <p class="subtitle">ORGANISATION DES COMPTES — CCF & BOURSORAMA</p>
+
+  <!-- CARTE CCF -->
+  <div class="hub-card" id="hub-card">
+    <div class="hub-title">
+      <span>🏦</span> Compte CCF — Centre Nerveux
+      <span>réceptions</span>
+    </div>
+    <div class="flow-row">
+      <span class="label">👤 Salaire Mr</span>
+      <span class="value in" id="salaire-mr">+2 500 €</span>
+    </div>
+    <div class="flow-row">
+      <span class="label">👩 Salaire Mme</span>
+      <span class="value in" id="salaire-mme">+1 800 €</span>
+    </div>
+    <div class="flow-row">
+      <span class="label">🏛️ CAF</span>
+      <span class="value in" id="caf">+860 €</span>
+    </div>
+    <div class="flow-row" style="margin-top:4px;">
+      <span class="label">🔒 Charges fixes</span>
+      <span class="value" style="color:var(--rouge)">−1 100 €</span>
+    </div>
+    <div class="hub-total">
+      <span class="total-label">💶 Reste à dispatcher</span>
+      <span class="total-value" id="reste-a-dispatcher">4 060 €</span>
+    </div>
+  </div>
+
+  <div class="connector-line">
+    <span class="arrow">⬇</span> Dispatch depuis CCF vers
+  </div>
+
+  <!-- COMPTES -->
+  <div class="accounts-grid" id="accounts-grid">
+    <div class="account-card card-hayette">
+      <span class="emoji">👩‍🦰</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Hayette</div>
+        <div class="account-desc">Budget personnel Mme</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-hayette">260</span></div>
+    </div>
+    <div class="account-card card-rachid">
+      <span class="emoji">👨</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Rachid</div>
+        <div class="account-desc">Budget personnel Mr</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-rachid">100</span></div>
+    </div>
+    <div class="account-card card-viecourante">
+      <span class="emoji">🛒</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Vie Courante</div>
+        <div class="account-desc">Courses & dépenses quotidiennes</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-viecourante">2 000</span></div>
+    </div>
+    <div class="account-card card-amine">
+      <span class="emoji">🧑</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Amine</div>
+        <div class="account-desc">Argent de poche</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-amine">35</span></div>
+    </div>
+    <div class="account-card card-mayssa">
+      <span class="emoji">👧</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Mayssa</div>
+        <div class="account-desc">Argent de poche</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-mayssa">35</span></div>
+    </div>
+    <div class="account-card card-assiya">
+      <span class="emoji">👶</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Assiya</div>
+        <div class="account-desc">Argent de poche</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-assiya">35</span></div>
+    </div>
+    <div class="account-card card-epargne">
+      <span class="emoji">🏦</span>
+      <div class="account-info">
+        <div class="account-name">Bourso Épargne</div>
+        <div class="account-desc">Tout le reste — épargne</div>
+      </div>
+      <div class="account-amount"><span class="currency">€</span> <span id="montant-epargne">—</span></div>
+    </div>
+  </div>
+
+  <!-- RÉSUMÉ -->
+  <div class="summary-bar">
+    <div class="summary-row">
+      <span class="text">💰 Total revenus</span>
+      <span id="total-revenus">5 160 €</span>
+    </div>
+    <div class="summary-row">
+      <span class="text">🔒 Charges fixes</span>
+      <span style="color:var(--rouge)">−1 100 €</span>
+    </div>
+    <div class="summary-row">
+      <span class="text">📤 Total dispatché</span>
+      <span id="total-dispatch">2 465 €</span>
+    </div>
+    <div class="summary-row remaining">
+      <span class="text">📥 Reste vers Épargne</span>
+      <span class="value" id="reste-epargne">1 595 €</span>
+    </div>
+  </div>
+
+  <!-- MODIFIER -->
+  <button class="edit-toggle" id="edit-toggle">✏️ Modifier les montants</button>
+
+  <div class="edit-panel" id="edit-panel">
+    <h3>Revenus</h3>
+    <div class="edit-group">
+      <label>Salaire Mr (€)</label>
+      <input type="number" id="edit-mr" value="2500">
+    </div>
+    <div class="edit-group">
+      <label>Salaire Mme (€)</label>
+      <input type="number" id="edit-mme" value="1800">
+    </div>
+    <div class="edit-group">
+      <label>CAF (€)</label>
+      <input type="number" id="edit-caf" value="860">
+    </div>
+    <div class="edit-group">
+      <label>Charges fixes (€)</label>
+      <input type="number" id="edit-charges" value="1100">
+    </div>
+
+    <h3 style="margin-top:14px;">Dispatch</h3>
+    <div class="edit-group">
+      <label>Bourso Hayette (€)</label>
+      <input type="number" id="edit-hayette" value="260">
+    </div>
+    <div class="edit-group">
+      <label>Bourso Rachid (€)</label>
+      <input type="number" id="edit-rachid" value="100">
+    </div>
+    <div class="edit-group">
+      <label>Bourso Vie Courante (€)</label>
+      <input type="number" id="edit-viecourante" value="2000">
+    </div>
+    <div class="edit-group">
+      <label>Bourso Amine (€)</label>
+      <input type="number" id="edit-amine" value="35">
+    </div>
+    <div class="edit-group">
+      <label>Bourso Mayssa (€)</label>
+      <input type="number" id="edit-mayssa" value="35">
+    </div>
+    <div class="edit-group">
+      <label>Bourso Assiya (€)</label>
+      <input type="number" id="edit-assiya" value="35">
+    </div>
+
+    <button class="edit-save" id="edit-save">💾 Enregistrer</button>
+  </div>
+
+  <footer>Budget Familial · Données stockées localement</footer>
+</div>
+
+<div class="toast" id="toast">✅ Montants mis à jour !</div>
+
+<script>
+(function() {
+  // Éléments
+  const el = {
+    mr: document.getElementById('salaire-mr'),
+    mme: document.getElementById('salaire-mme'),
+    caf: document.getElementById('caf'),
+    dispatcher: document.getElementById('reste-a-dispatcher'),
+    hayette: document.getElementById('montant-hayette'),
+    rachid: document.getElementById('montant-rachid'),
+    viecourante: document.getElementById('montant-viecourante'),
+    amine: document.getElementById('montant-amine'),
+    mayssa: document.getElementById('montant-mayssa'),
+    assiya: document.getElementById('montant-assiya'),
+    epargne: document.getElementById('montant-epargne'),
+    totalRevenus: document.getElementById('total-revenus'),
+    totalDispatch: document.getElementById('total-dispatch'),
+    resteEpargne: document.getElementById('reste-epargne'),
+  };
+
+  function format(n) {
+    return n.toLocaleString('fr-FR') + ' €';
+  }
+
+  function update(data) {
+    // Appliquer au hub
+    el.mr.textContent = '+' + format(data.salaireMr).replace(' €', '') + ' €';
+    el.mme.textContent = '+' + format(data.salaireMme).replace(' €', '') + ' €';
+    el.caf.textContent = '+' + format(data.caf).replace(' €', '') + ' €';
+
+    const totalRevenus = data.salaireMr + data.salaireMme + data.caf;
+    const resteDispatch = totalRevenus - data.chargesFixes;
+
+    el.dispatcher.textContent = format(resteDispatch);
+    el.totalRevenus.textContent = format(totalRevenus);
+
+    // Appliquer au dispatch
+    el.hayette.textContent = data.hayette.toLocaleString('fr-FR');
+    el.rachid.textContent = data.rachid.toLocaleString('fr-FR');
+    el.viecourante.textContent = data.viecourante.toLocaleString('fr-FR');
+    el.amine.textContent = data.amine.toLocaleString('fr-FR');
+    el.mayssa.textContent = data.mayssa.toLocaleString('fr-FR');
+    el.assiya.textContent = data.assiya.toLocaleString('fr-FR');
+
+    const totalDispatch = data.hayette + data.rachid + data.viecourante + data.amine + data.mayssa + data.assiya;
+    const resteEpargne = resteDispatch - totalDispatch;
+
+    el.totalDispatch.textContent = format(totalDispatch);
+    el.resteEpargne.textContent = format(resteEpargne);
+    el.epargne.textContent = resteEpargne.toLocaleString('fr-FR');
+  }
+
+  function getData() {
+    return {
+      salaireMr: parseInt(document.getElementById('edit-mr').value) || 0,
+      salaireMme: parseInt(document.getElementById('edit-mme').value) || 0,
+      caf: parseInt(document.getElementById('edit-caf').value) || 0,
+      chargesFixes: parseInt(document.getElementById('edit-charges').value) || 0,
+      hayette: parseInt(document.getElementById('edit-hayette').value) || 0,
+      rachid: parseInt(document.getElementById('edit-rachid').value) || 0,
+      viecourante: parseInt(document.getElementById('edit-viecourante').value) || 0,
+      amine: parseInt(document.getElementById('edit-amine').value) || 0,
+      mayssa: parseInt(document.getElementById('edit-mayssa').value) || 0,
+      assiya: parseInt(document.getElementById('edit-assiya').value) || 0,
+    };
+  }
+
+  function saveToStorage(data) {
+    try {
+      localStorage.setItem('budget-familial', JSON.stringify(data));
+    } catch(e) {}
+  }
+
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem('budget-familial');
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return null;
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg || '✅ Montants mis à jour !';
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2200);
+  }
+
+  // Charger les données sauvegardées au démarrage
+  const saved = loadFromStorage();
+  if (saved) {
+    // Appliquer aux inputs
+    document.getElementById('edit-mr').value = saved.salaireMr;
+    document.getElementById('edit-mme').value = saved.salaireMme;
+    document.getElementById('edit-caf').value = saved.caf;
+    document.getElementById('edit-charges').value = saved.chargesFixes;
+    document.getElementById('edit-hayette').value = saved.hayette;
+    document.getElementById('edit-rachid').value = saved.rachid;
+    document.getElementById('edit-viecourante').value = saved.viecourante;
+    document.getElementById('edit-amine').value = saved.amine;
+    document.getElementById('edit-mayssa').value = saved.mayssa;
+    document.getElementById('edit-assiya').value = saved.assiya;
+    update(saved);
+  } else {
+    // Valeurs par défaut
+    update(getData());
+  }
+
+  // Toggle panel
+  document.getElementById('edit-toggle').addEventListener('click', function() {
+    const panel = document.getElementById('edit-panel');
+    panel.classList.toggle('open');
+    this.textContent = panel.classList.contains('open')
+      ? '✏️ Modifier les montants'
+      : '✏️ Modifier les montants';
+
+    // Recharger les inputs depuis les valeurs sauvegardées si on ouvre
+    if (!panel.classList.contains('open')) {
+      // À la fermeture, on remet les inputs aux valeurs actuelles
+      const data = getData();
+      const current = loadFromStorage() || data;
+      document.getElementById('edit-mr').value = current.salaireMr;
+      document.getElementById('edit-mme').value = current.salaireMme;
+      document.getElementById('edit-caf').value = current.caf;
+      document.getElementById('edit-charges').value = current.chargesFixes;
+      document.getElementById('edit-hayette').value = current.hayette;
+      document.getElementById('edit-rachid').value = current.rachid;
+      document.getElementById('edit-viecourante').value = current.viecourante;
+      document.getElementById('edit-amine').value = current.amine;
+      document.getElementById('edit-mayssa').value = current.mayssa;
+      document.getElementById('edit-assiya').value = current.assiya;
+    }
+  });
+
+  // Save
+  document.getElementById('edit-save').addEventListener('click', function() {
+    const data = getData();
+    saveToStorage(data);
+    update(data);
+    document.getElementById('edit-panel').classList.remove('open');
+    document.getElementById('edit-toggle').textContent = '✏️ Modifier les montants';
+    showToast('✅ Montants mis à jour !');
+  });
+
+  // Auto-update preview à la saisie
+  document.querySelectorAll('.edit-panel input').forEach(input => {
+    input.addEventListener('input', function() {
+      const data = getData();
+      update(data);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

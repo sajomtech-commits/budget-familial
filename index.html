@@ -153,7 +153,7 @@
   <h1>💰 Budget Familial</h1>
   <p class="sub">CCF · CENTRE NERVEUX</p>
 
-  <svg viewBox="0 0 440 470" id="d">
+  <svg viewBox="0 0 460 490" id="d">
     <defs>
       <radialGradient id="cg" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#2a3a7a"/>
@@ -166,21 +166,19 @@
     </defs>
 
     <!-- GLOW CCF -->
-    <circle cx="215" cy="185" r="76" fill="none" stroke="#54a0ff" stroke-width="1" opacity="0.12"/>
+    <circle cx="215" cy="185" r="82" fill="none" stroke="#54a0ff" stroke-width="1" opacity="0.12"/>
     <!-- CCF -->
-    <circle cx="215" cy="185" r="64" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
+    <circle cx="215" cy="185" r="70" fill="url(#cg)" stroke="#54a0ff" stroke-width="2.5"/>
 
-    <text x="215" y="150" text-anchor="middle" font-size="13" font-weight="800" fill="#54a0ff">CCF ⬡</text>
-    <text x="215" y="162" text-anchor="middle" font-size="6" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
+    <text x="215" y="144" text-anchor="middle" font-size="14" font-weight="800" fill="#54a0ff">CCF ⬡</text>
+    <text x="215" y="157" text-anchor="middle" font-size="6.5" fill="#6a6a8a" dominant-baseline="hanging">Centre Nerveux</text>
 
-    <text x="215" y="180" text-anchor="middle" font-size="8.5" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r1">+2 500€</text>
-    <text x="215" y="191" text-anchor="middle" font-size="8.5" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r2">+1 800€</text>
-    <text x="215" y="202" text-anchor="middle" font-size="8.5" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r3">+860€</text>
+    <text x="215" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r1">+2 500€</text>
+    <text x="215" y="190" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r2">+1 800€</text>
+    <text x="215" y="202" text-anchor="middle" font-size="9" font-weight="700" fill="#53d769" dominant-baseline="hanging" id="r3">+860€</text>
 
-    <!-- Charges et reste, groupés visuellement -->
-    <rect x="178" y="216" width="74" height="24" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-    <text x="215" y="226" text-anchor="middle" font-size="7" font-weight="500" fill="#ff6b81" dominant-baseline="hanging" id="r4">🔒 -1 100€</text>
-    <text x="215" y="236" text-anchor="middle" font-size="8" font-weight="800" fill="#54a0ff" dominant-baseline="hanging" id="r5">↘ 4 060€</text>
+    <text x="215" y="224" text-anchor="middle" font-size="7.5" fill="#ff6b81" font-weight="600" dominant-baseline="hanging" id="r4">🔒 -1 100€</text>
+    <text x="215" y="235" text-anchor="middle" font-size="9" fill="#54a0ff" font-weight="800" dominant-baseline="hanging" id="r5">↘ 4 060€</text>
 
     <g id="arrows"></g>
     <g id="bubbles"></g>
@@ -296,8 +294,8 @@
 
       // --- FLÈCHE ---
       var ar = Math.atan2(y - CY, x - CX);
-      var x1 = CX + Math.cos(ar) * 68;
-      var y1 = CY + Math.sin(ar) * 68;
+      var x1 = CX + Math.cos(ar) * 74;
+      var y1 = CY + Math.sin(ar) * 74;
       var x2 = x - Math.cos(ar) * (r + 4);
       var y2 = y - Math.sin(ar) * (r + 4);
 
